@@ -690,3 +690,152 @@ async function compartilharPDF() {
 
 </body>
 </html>
+!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WevertonCar - Orçamento de Mão de Obra</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#111;margin:0;padding:20px;color:#fff}
+.card{max-width:620px;margin:auto;background:#1b1b1b;padding:24px;border-radius:16px;border:2px solid #d40000;box-shadow:0 4px 20px #000}
+h1{margin:0;color:#ff1a1a;text-align:center}
+.sub{text-align:center;color:#ddd;margin:6px 0 4px}
+.company{text-align:center;color:#bbb;font-size:14px;margin-bottom:20px}
+.section{border-top:1px solid #444;margin-top:20px;padding-top:15px}
+h2{font-size:18px;color:#ff3333;margin:0 0 8px}
+label{display:block;margin-top:12px;font-weight:bold}
+input,select{width:100%;padding:12px;margin-top:6px;border:1px solid #555;border-radius:10px;background:#292929;color:#fff;font-size:16px}
+button{width:100%;padding:13px;margin-top:16px;border:0;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer}
+.primary{background:#d40000;color:#fff}
+.secondary{background:#333;color:#fff;border:1px solid #666}
+.result{margin-top:18px;padding:16px;background:#260909;border:1px solid #d40000;border-radius:10px;font-size:18px;line-height:1.6}
+small{display:block;margin-top:14px;color:#aaa}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>WevertonCar</h1>
+<div class="sub">Orçamento de Mão de Obra</div>
+<div class="company">Rua São Regis, 310 - Bairro Nova York</div>
+
+<div class="section">
+<h2>Dados do cliente</h2>
+<label>Nome do cliente</label>
+<input id="cliente" placeholder="Nome">
+
+<label>Endereço</label>
+<input id="endereco" placeholder="Endereço do cliente">
+
+<label>Telefone</label>
+<input id="telefone" placeholder="Telefone">
+</div>
+
+<div class="section">
+<h2>Dados do carro</h2>
+<label>Carro / modelo</label>
+<input id="carro" list="carros" placeholder="Ex.: Uno, Golf Sapão">
+<datalist id="carros">
+<option value="Uno">
+<option value="Golf Sapão">
+</datalist>
+
+<label>Ano</label>
+<input id="ano" type="number" min="1900" max="2100" placeholder="Ano">
+
+<label>Categoria</label>
+<select id="categoria">
+<option value="Nacional">Nacional</option>
+<option value="Importado">Importado</option>
+</select>
+</div>
+
+<div class="section">
+<h2>Serviço</h2>
+<label>Serviço</label>
+<select id="servico">
+<option value="Troca de partilha">Troca de partilha</option>
+<option value="Outro">Outro serviço</option>
+</select>
+
+<label id="minutosLabel">Tempo (minutos)</label>
+<input id="minutos" type="number" min="0" value="30">
+
+<label>Valor da hora técnica (R$)</label>
+<input id="hora" type="number" min="0" step="0.01" value="120">
+</div>
+
+<button class="primary" onclick="calcular()">Calcular mão de obra</button>
+
+<div class="result" id="resultado">
+Preencha os dados e clique em calcular.
+</div>
+
+<button class="secondary" onclick="enviarWhatsApp()">Enviar orçamento pelo WhatsApp</button>
+
+<small>Tempario inicial: Uno + troca de partilha = R$ 120,00; Golf Sapão + troca de partilha = R$ 150,00.</small>
+</div>
+
+<script>
+function valorCadastrado(carro, servico){
+  const c=(carro||'').trim().toLowerCase();
+  const s=(servico||'').trim().toLowerCase();
+
+  if(s==='troca de partilha' && c==='uno') return 120;
+  if(s==='troca de partilha' && (c==='golf sapão'||c==='golf sapao')) return 150;
+
+  return null;
+}
+
+function calcular(){
+  const cliente=document.getElementById('cliente').value.trim();
+  const carro=document.getElementById('carro').value.trim();
+  const ano=document.getElementById('ano').value.trim();
+  const categoria=document.getElementById('categoria').value;
+  const servico=document.getElementById('servico').value;
+  const minutos=Number(document.getElementById('minutos').value)||0;
+  const hora=Number(document.getElementById('hora').value)||0;
+
+  let valor=valorCadastrado(carro,servico);
+  let origem='valor cadastrado';
+
+  if(valor===null){
+    valor=(minutos/60)*hora;
+    origem='cálculo pela hora técnica';
+  }
+
+  document.getElementById('resultado').innerHTML =
+    `<b>${servico}</b><br>`+
+    `${carro||'Carro não informado'}${ano?' - '+ano:''} (${categoria})<br>`+
+    `${minutos} min — <b>R$ ${valor.toFixed(2).replace('.',',')}</b><br>`+
+    `<small>${origem}</small>`;
+}
+
+function enviarWhatsApp(){
+  const cliente=document.getElementById('cliente').value.trim();
+  const carro=document.getElementById('carro').value.trim();
+  const ano=document.getElementById('ano').value.trim();
+  const categoria=document.getElementById('categoria').value;
+  const servico=document.getElementById('servico').value;
+  const minutos=Number(document.getElementById('minutos').value)||0;
+  const hora=Number(document.getElementById('hora').value)||0;
+
+  let valor=valorCadastrado(carro,servico);
+  if(valor===null) valor=(minutos/60)*hora;
+
+  const texto =
+`*WevertonCar - Orçamento de Mão de Obra*
+Rua São Regis, 310 - Bairro Nova York
+
+Cliente: ${cliente||'Não informado'}
+Carro: ${carro||'Não informado'}${ano?' - '+ano:''}
+Categoria: ${categoria}
+Serviço: ${servico}
+Mão de obra: R$ ${valor.toFixed(2).replace('.',',')}`;
+
+  window.open('https://wa.me/?text='+encodeURIComponent(texto),'_blank');
+}
+</script>
+</body>
+</html>
