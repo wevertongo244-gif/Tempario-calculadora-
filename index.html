@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WevertonCar - Orçamento</title>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">document.addEventListener('input',e=>{if(e.target.matches('.servico,.minutos,.hora,#carro')) atualizarValores();});
+</script>
 
 <style>
 *{box-sizing:border-box}
@@ -24,7 +25,7 @@ button{width:100%;padding:13px;margin-top:16px;border:0;border-radius:10px;font-
 .primary{background:#d40000;color:#fff}
 .secondary{background:#25D366;color:#fff}
 .pdf{background:#333;color:#fff;border:1px solid #666}
-.result{margin-top:18px;padding:16px;background:#260909;border:1px solid #d40000;border-radius:10px;font-size:18px;line-height:1.6}
+.result{margin-top:18px;padding:16px;background:#260909;border:1px solid #d40000;border-radius:10px;font-size:18px;line-height:1.6}.servico-item{margin-bottom:18px;padding:14px;background:#222;border:1px solid #444;border-radius:12px}.valor-servico{margin-top:10px;padding:10px;background:#160606;border-radius:8px;font-weight:bold}.remover-servico{background:#555;color:#fff;margin-top:10px;padding:9px}
 small{display:block;margin-top:14px;color:#aaa}
 </style>
 </head>
@@ -75,16 +76,19 @@ small{display:block;margin-top:14px;color:#aaa}
 </div>
 
 <div class="section">
-<h2>Serviço</h2>
-
-<label>Serviço a executar</label>
-<textarea id="servico" placeholder="Digite aqui exatamente qual serviço será executado"></textarea>
-
-<label>Tempo (minutos)</label>
-<input id="minutos" type="number" min="0" value="30">
-
-<label>Valor da hora técnica (R$)</label>
-<input id="hora" type="number" min="0" step="0.01" value="120">
+<h2>Serviços</h2>
+<div id="listaServicos">
+  <div class="servico-item">
+    <label>Serviço 1</label>
+    <textarea class="servico" placeholder="Digite o serviço que será executado"></textarea>
+    <label>Tempo (minutos)</label>
+    <input class="minutos" type="number" min="0" value="30">
+    <label>Valor da hora técnica (R$)</label>
+    <input class="hora" type="number" min="0" step="0.01" value="120">
+    <div class="valor-servico">Mão de obra: R$ 60,00</div>
+  </div>
+</div>
+<button type="button" class="pdf" onclick="adicionarServico()">➕ Adicionar outro serviço</button>
 </div>
 
 <div class="section">
@@ -121,37 +125,18 @@ O serviço e as peças podem ser digitados livremente. O valor da mão de obra �
 <script>
 function valorCadastrado(carro, servico){
   const c=(carro||'').trim().toLowerCase();
-  const s=(servico||'').trim().toLowerCase();
-
-  if(s==='troca de partilha' && c==='uno') return 120;
-  if(s==='troca de partilha' && (c==='golf sapão'||c==='golf sapao')) return 150;
-
+  const x=(servico||'').trim().toLowerCase();
+  if(x==='troca de partilha' && c==='uno') return 120;
+  if(x==='troca de partilha' && (c==='golf sapão'||c==='golf sapao')) return 150;
   return null;
 }
-
-function dados(){
-  return {
-    cliente:document.getElementById('cliente').value.trim(),
-    endereco:document.getElementById('endereco').value.trim(),
-    telefone:document.getElementById('telefone').value.trim(),
-    carro:document.getElementById('carro').value.trim(),
-    ano:document.getElementById('ano').value.trim(),
-    placa:document.getElementById('placa').value.trim(),
-    categoria:document.getElementById('categoria').value,
-    servico:document.getElementById('servico').value.trim(),
-    minutos:Number(document.getElementById('minutos').value)||0,
-    hora:Number(document.getElementById('hora').value)||0,
-    pecas:document.getElementById('pecas').value.trim(),
-    valorPecas:Number(document.getElementById('valorPecas').value)||0,
-    observacoes:document.getElementById('observacoes').value.trim()
-  };
-}
-
-function valorMaoObra(d){
-  let cadastrado=valorCadastrado(d.carro,d.servico);
-  if(cadastrado!==null) return cadastrado;
-  return (d.minutos/60)*d.hora;
-}
+function lerServicos(){return Array.from(document.querySelectorAll('.servico-item')).map(i=>({servico:i.querySelector('.servico').value.trim(),minutos:Number(i.querySelector('.minutos').value)||0,hora:Number(i.querySelector('.hora').value)||0})).filter(x=>x.servico);}
+function valorServico(d,s){const c=valorCadastrado(d.carro,s.servico);return c!==null?c:(s.minutos/60)*s.hora;}
+function atualizarValores(){const d={carro:document.getElementById('carro').value.trim()};document.querySelectorAll('.servico-item').forEach(i=>{const s={servico:i.querySelector('.servico').value.trim(),minutos:Number(i.querySelector('.minutos').value)||0,hora:Number(i.querySelector('.hora').value)||0};i.querySelector('.valor-servico').textContent='Mão de obra: '+dinheiro(valorServico(d,s));});}
+function adicionarServico(){const l=document.getElementById('listaServicos'),n=l.children.length+1,i=document.createElement('div');i.className='servico-item';i.innerHTML=`<label>Serviço ${n}</label><textarea class="servico" placeholder="Digite o serviço que será executado"></textarea><label>Tempo (minutos)</label><input class="minutos" type="number" min="0" value="30"><label>Valor da hora técnica (R$)</label><input class="hora" type="number" min="0" step="0.01" value="120"><div class="valor-servico">Mão de obra: R$ 60,00</div><button type="button" class="remover-servico" onclick="removerServico(this)">🗑️ Remover serviço</button>`;l.appendChild(i);atualizarValores();}
+function removerServico(b){b.closest('.servico-item').remove();document.querySelectorAll('.servico-item').forEach((i,n)=>i.querySelector('label').textContent='Serviço '+(n+1));atualizarValores();}
+function dados(){return {cliente:document.getElementById('cliente').value.trim(),endereco:document.getElementById('endereco').value.trim(),telefone:document.getElementById('telefone').value.trim(),carro:document.getElementById('carro').value.trim(),ano:document.getElementById('ano').value.trim(),placa:document.getElementById('placa').value.trim(),categoria:document.getElementById('categoria').value,servicos:lerServicos(),pecas:document.getElementById('pecas').value.trim(),valorPecas:Number(document.getElementById('valorPecas').value)||0,observacoes:document.getElementById('observacoes').value.trim()};}
+function totalMaoObra(d){return d.servicos.reduce((t,s)=>t+valorServico(d,s),0);}
 
 function dinheiro(v){
   return Number(v||0).toLocaleString('pt-BR',{
@@ -160,34 +145,13 @@ function dinheiro(v){
   });
 }
 
-function calcular(){
-  const d=dados();
-
-  if(!d.servico){
-    alert('Digite o serviço que será executado.');
-    return;
-  }
-
-  const mao=valorMaoObra(d);
-  const total=mao+d.valorPecas;
-  const origem=valorCadastrado(d.carro,d.servico)!==null
-    ? 'valor cadastrado'
-    : 'cálculo pela hora técnica';
-
-  document.getElementById('resultado').innerHTML =
-    `<b>${d.servico}</b><br>`+
-    `${d.carro||'Carro não informado'}${d.ano?' - '+d.ano:''} (${d.categoria})<br>`+
-    `Mão de obra: <b>${dinheiro(mao)}</b><br>`+
-    `Peças: <b>${dinheiro(d.valorPecas)}</b><br>`+
-    `Total: <b>${dinheiro(total)}</b>`+
-    `<small>${origem}</small>`;
-}
+function calcular(){const d=dados();if(!d.servicos.length){alert('Digite pelo menos um serviço que será executado.');return;}const mao=totalMaoObra(d),total=mao+d.valorPecas;document.getElementById('resultado').innerHTML='<b>Serviços:</b><br>'+d.servicos.map((x,n)=>(n+1)+'. '+x.servico+' — <b>'+dinheiro(valorServico(d,x))+'</b>').join('<br>')+'<br><br>Mão de obra total: <b>'+dinheiro(mao)+'</b><br>Peças: <b>'+dinheiro(d.valorPecas)+'</b><br>Total geral: <b>'+dinheiro(total)+'</b>';}
 
 function criarPDF(){
   const d=dados();
 
-  if(!d.servico){
-    alert('Digite o serviço que será executado.');
+  if(!d.servicos.length){
+    alert('Digite pelo menos um serviço que será executado.');
     return null;
   }
 
@@ -240,12 +204,12 @@ function criarPDF(){
   textoQuebrado('Categoria: '+d.categoria);
 
   titulo('SERVIÇO A EXECUTAR');
-  textoQuebrado(d.servico);
+  d.servicos.forEach((x,i)=>{ textoQuebrado((i+1)+'. '+x.servico); textoQuebrado('Mão de obra: '+dinheiro(valorServico(d,x))); });
 
   titulo('PEÇAS UTILIZADAS');
   textoQuebrado(d.pecas||'Nenhuma peça informada');
 
-  const mao=valorMaoObra(d);
+  const mao=totalMaoObra(d);
   const total=mao+d.valorPecas;
 
   titulo('VALORES');
@@ -330,12 +294,12 @@ async function compartilharPDF(){
 function enviarWhatsAppTexto(){
   const d=dados();
 
-  if(!d.servico){
-    alert('Digite o serviço que será executado.');
+  if(!d.servicos.length){
+    alert('Digite pelo menos um serviço que será executado.');
     return;
   }
 
-  const mao=valorMaoObra(d);
+  const mao=totalMaoObra(d);
   const total=mao+d.valorPecas;
 
   const texto=
@@ -348,7 +312,7 @@ Placa: ${d.placa||'Não informada'}
 Categoria: ${d.categoria}
 
 *Serviço:*
-${d.servico}
+${d.servicos.map((x,i)=>(i+1)+'. '+x.servico+' - '+dinheiro(valorServico(d,x))).join('\n')}
 
 *Peças:*
 ${d.pecas||'Nenhuma peça informada'}
@@ -359,6 +323,7 @@ Peças: ${dinheiro(d.valorPecas)}
 
   window.open('https://wa.me/?text='+encodeURIComponent(texto),'_blank');
 }
+document.addEventListener('input',e=>{if(e.target.matches('.servico,.minutos,.hora,#carro')) atualizarValores();});
 </script>
 </body>
 </html>
