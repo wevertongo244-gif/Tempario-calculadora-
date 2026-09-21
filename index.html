@@ -1,35 +1,45 @@
-!doctype html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WevertonCar - Orçamento de Mão de Obra</title>
+<title>WevertonCar - Orçamento</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <style>
 *{box-sizing:border-box}
 body{font-family:Arial,sans-serif;background:#111;margin:0;padding:20px;color:#fff}
 .card{max-width:620px;margin:auto;background:#1b1b1b;padding:24px;border-radius:16px;border:2px solid #d40000;box-shadow:0 4px 20px #000}
 h1{margin:0;color:#ff1a1a;text-align:center}
+.logo{text-align:center;font-size:42px;line-height:1}
 .sub{text-align:center;color:#ddd;margin:6px 0 4px}
 .company{text-align:center;color:#bbb;font-size:14px;margin-bottom:20px}
 .section{border-top:1px solid #444;margin-top:20px;padding-top:15px}
 h2{font-size:18px;color:#ff3333;margin:0 0 8px}
 label{display:block;margin-top:12px;font-weight:bold}
-input,select{width:100%;padding:12px;margin-top:6px;border:1px solid #555;border-radius:10px;background:#292929;color:#fff;font-size:16px}
+input,select,textarea{width:100%;padding:12px;margin-top:6px;border:1px solid #555;border-radius:10px;background:#292929;color:#fff;font-size:16px}
+textarea{min-height:90px;resize:vertical}
 button{width:100%;padding:13px;margin-top:16px;border:0;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer}
 .primary{background:#d40000;color:#fff}
-.secondary{background:#333;color:#fff;border:1px solid #666}
+.secondary{background:#25D366;color:#fff}
+.pdf{background:#333;color:#fff;border:1px solid #666}
 .result{margin-top:18px;padding:16px;background:#260909;border:1px solid #d40000;border-radius:10px;font-size:18px;line-height:1.6}
 small{display:block;margin-top:14px;color:#aaa}
 </style>
 </head>
+
 <body>
 <div class="card">
+
+<div class="logo">⚙️</div>
 <h1>WevertonCar</h1>
-<div class="sub">Orçamento de Mão de Obra</div>
+<div class="sub">Orçamento de Serviço</div>
 <div class="company">Rua São Regis, 310 - Bairro Nova York</div>
 
 <div class="section">
 <h2>Dados do cliente</h2>
+
 <label>Nome do cliente</label>
 <input id="cliente" placeholder="Nome">
 
@@ -42,8 +52,10 @@ small{display:block;margin-top:14px;color:#aaa}
 
 <div class="section">
 <h2>Dados do carro</h2>
+
 <label>Carro / modelo</label>
 <input id="carro" list="carros" placeholder="Ex.: Uno, Golf Sapão">
+
 <datalist id="carros">
 <option value="Uno">
 <option value="Golf Sapão">
@@ -51,6 +63,9 @@ small{display:block;margin-top:14px;color:#aaa}
 
 <label>Ano</label>
 <input id="ano" type="number" min="1900" max="2100" placeholder="Ano">
+
+<label>Placa</label>
+<input id="placa" placeholder="Placa">
 
 <label>Categoria</label>
 <select id="categoria">
@@ -61,28 +76,46 @@ small{display:block;margin-top:14px;color:#aaa}
 
 <div class="section">
 <h2>Serviço</h2>
-<label>Serviço</label>
-<select id="servico">
-<option value="Troca de partilha">Troca de partilha</option>
-<option value="Outro">Outro serviço</option>
-</select>
 
-<label id="minutosLabel">Tempo (minutos)</label>
+<label>Serviço a executar</label>
+<textarea id="servico" placeholder="Digite aqui exatamente qual serviço será executado"></textarea>
+
+<label>Tempo (minutos)</label>
 <input id="minutos" type="number" min="0" value="30">
 
 <label>Valor da hora técnica (R$)</label>
 <input id="hora" type="number" min="0" step="0.01" value="120">
 </div>
 
-<button class="primary" onclick="calcular()">Calcular mão de obra</button>
+<div class="section">
+<h2>Peças</h2>
+
+<label>Peças que serão utilizadas</label>
+<textarea id="pecas" placeholder="Digite uma peça por linha&#10;Ex.:&#10;Bomba d'água&#10;Junta&#10;Aditivo"></textarea>
+
+<label>Valor das peças (R$)</label>
+<input id="valorPecas" type="number" min="0" step="0.01" value="0">
+</div>
+
+<div class="section">
+<h2>Observações</h2>
+<textarea id="observacoes" placeholder="Observações, condições ou informações adicionais"></textarea>
+</div>
+
+<button class="primary" onclick="calcular()">Calcular orçamento</button>
 
 <div class="result" id="resultado">
 Preencha os dados e clique em calcular.
 </div>
 
-<button class="secondary" onclick="enviarWhatsApp()">Enviar orçamento pelo WhatsApp</button>
+<button class="pdf" onclick="gerarPDF()">📄 Gerar PDF</button>
+<button class="secondary" onclick="compartilharPDF()">📲 Compartilhar PDF</button>
+<button class="pdf" onclick="enviarWhatsAppTexto()">💬 Enviar resumo pelo WhatsApp</button>
 
-<small>Tempario inicial: Uno + troca de partilha = R$ 120,00; Golf Sapão + troca de partilha = R$ 150,00.</small>
+<small>
+O serviço e as peças podem ser digitados livremente. O valor da mão de obra é calculado pela hora técnica, salvo quando houver valor cadastrado.
+</small>
+
 </div>
 
 <script>
@@ -96,51 +129,233 @@ function valorCadastrado(carro, servico){
   return null;
 }
 
+function dados(){
+  return {
+    cliente:document.getElementById('cliente').value.trim(),
+    endereco:document.getElementById('endereco').value.trim(),
+    telefone:document.getElementById('telefone').value.trim(),
+    carro:document.getElementById('carro').value.trim(),
+    ano:document.getElementById('ano').value.trim(),
+    placa:document.getElementById('placa').value.trim(),
+    categoria:document.getElementById('categoria').value,
+    servico:document.getElementById('servico').value.trim(),
+    minutos:Number(document.getElementById('minutos').value)||0,
+    hora:Number(document.getElementById('hora').value)||0,
+    pecas:document.getElementById('pecas').value.trim(),
+    valorPecas:Number(document.getElementById('valorPecas').value)||0,
+    observacoes:document.getElementById('observacoes').value.trim()
+  };
+}
+
+function valorMaoObra(d){
+  let cadastrado=valorCadastrado(d.carro,d.servico);
+  if(cadastrado!==null) return cadastrado;
+  return (d.minutos/60)*d.hora;
+}
+
+function dinheiro(v){
+  return Number(v||0).toLocaleString('pt-BR',{
+    style:'currency',
+    currency:'BRL'
+  });
+}
+
 function calcular(){
-  const cliente=document.getElementById('cliente').value.trim();
-  const carro=document.getElementById('carro').value.trim();
-  const ano=document.getElementById('ano').value.trim();
-  const categoria=document.getElementById('categoria').value;
-  const servico=document.getElementById('servico').value;
-  const minutos=Number(document.getElementById('minutos').value)||0;
-  const hora=Number(document.getElementById('hora').value)||0;
+  const d=dados();
 
-  let valor=valorCadastrado(carro,servico);
-  let origem='valor cadastrado';
-
-  if(valor===null){
-    valor=(minutos/60)*hora;
-    origem='cálculo pela hora técnica';
+  if(!d.servico){
+    alert('Digite o serviço que será executado.');
+    return;
   }
 
+  const mao=valorMaoObra(d);
+  const total=mao+d.valorPecas;
+  const origem=valorCadastrado(d.carro,d.servico)!==null
+    ? 'valor cadastrado'
+    : 'cálculo pela hora técnica';
+
   document.getElementById('resultado').innerHTML =
-    `<b>${servico}</b><br>`+
-    `${carro||'Carro não informado'}${ano?' - '+ano:''} (${categoria})<br>`+
-    `${minutos} min — <b>R$ ${valor.toFixed(2).replace('.',',')}</b><br>`+
+    `<b>${d.servico}</b><br>`+
+    `${d.carro||'Carro não informado'}${d.ano?' - '+d.ano:''} (${d.categoria})<br>`+
+    `Mão de obra: <b>${dinheiro(mao)}</b><br>`+
+    `Peças: <b>${dinheiro(d.valorPecas)}</b><br>`+
+    `Total: <b>${dinheiro(total)}</b>`+
     `<small>${origem}</small>`;
 }
 
-function enviarWhatsApp(){
-  const cliente=document.getElementById('cliente').value.trim();
-  const carro=document.getElementById('carro').value.trim();
-  const ano=document.getElementById('ano').value.trim();
-  const categoria=document.getElementById('categoria').value;
-  const servico=document.getElementById('servico').value;
-  const minutos=Number(document.getElementById('minutos').value)||0;
-  const hora=Number(document.getElementById('hora').value)||0;
+function criarPDF(){
+  const d=dados();
 
-  let valor=valorCadastrado(carro,servico);
-  if(valor===null) valor=(minutos/60)*hora;
+  if(!d.servico){
+    alert('Digite o serviço que será executado.');
+    return null;
+  }
 
-  const texto =
-`*WevertonCar - Orçamento de Mão de Obra*
+  const {jsPDF}=window.jspdf;
+  const pdf=new jsPDF();
+  let y=18;
+
+  pdf.setFont('helvetica','bold');
+  pdf.setFontSize(22);
+  pdf.text('⚙',105,y,{align:'center'});
+  y+=10;
+
+  pdf.setFontSize(18);
+  pdf.text('WevertonCar',105,y,{align:'center'});
+  y+=7;
+
+  pdf.setFontSize(11);
+  pdf.setFont('helvetica','normal');
+  pdf.text('ORÇAMENTO DE SERVIÇO',105,y,{align:'center'});
+  y+=7;
+  pdf.text('Rua São Regis, 310 - Bairro Nova York',105,y,{align:'center'});
+  y+=10;
+
+  pdf.line(15,y,195,y);
+  y+=10;
+
+  function titulo(t){
+    pdf.setFont('helvetica','bold');
+    pdf.setFontSize(11);
+    pdf.text(t,15,y);
+    y+=6;
+    pdf.setFont('helvetica','normal');
+  }
+
+  function textoQuebrado(t){
+    const linhas=pdf.splitTextToSize(t||'-',175);
+    pdf.text(linhas,15,y);
+    y+=linhas.length*5+5;
+  }
+
+  titulo('DADOS DO CLIENTE');
+  textoQuebrado('Cliente: '+(d.cliente||'-'));
+  textoQuebrado('Endereço: '+(d.endereco||'-'));
+  textoQuebrado('Telefone: '+(d.telefone||'-'));
+
+  titulo('DADOS DO CARRO');
+  textoQuebrado('Carro: '+(d.carro||'-'));
+  textoQuebrado('Ano: '+(d.ano||'-'));
+  textoQuebrado('Placa: '+(d.placa||'-'));
+  textoQuebrado('Categoria: '+d.categoria);
+
+  titulo('SERVIÇO A EXECUTAR');
+  textoQuebrado(d.servico);
+
+  titulo('PEÇAS UTILIZADAS');
+  textoQuebrado(d.pecas||'Nenhuma peça informada');
+
+  const mao=valorMaoObra(d);
+  const total=mao+d.valorPecas;
+
+  titulo('VALORES');
+
+  pdf.text('Mão de obra:',15,y);
+  pdf.text(dinheiro(mao),195,y,{align:'right'});
+  y+=7;
+
+  pdf.text('Peças:',15,y);
+  pdf.text(dinheiro(d.valorPecas),195,y,{align:'right'});
+  y+=8;
+
+  pdf.line(15,y,195,y);
+  y+=8;
+
+  pdf.setFont('helvetica','bold');
+  pdf.setFontSize(13);
+  pdf.text('TOTAL:',15,y);
+  pdf.text(dinheiro(total),195,y,{align:'right'});
+  y+=12;
+
+  if(d.observacoes){
+    titulo('OBSERVAÇÕES');
+    textoQuebrado(d.observacoes);
+  }
+
+  pdf.setFont('helvetica','normal');
+  pdf.setFontSize(8);
+  pdf.text('Orçamento sujeito à avaliação e confirmação do serviço.',105,285,{align:'center'});
+
+  const nome=(d.cliente||'Cliente')
+    .replace(/[^a-zA-Z0-9À-ÿ ]/g,'')
+    .replace(/\s+/g,'_');
+
+  return {
+    blob:pdf.output('blob'),
+    nome:'Orcamento_'+nome+'.pdf'
+  };
+}
+
+function gerarPDF(){
+  const r=criarPDF();
+  if(!r)return;
+
+  const url=URL.createObjectURL(r.blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=r.nome;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+
+  document.getElementById('resultado').innerHTML +=
+    '<small>PDF gerado com sucesso.</small>';
+}
+
+async function compartilharPDF(){
+  const r=criarPDF();
+  if(!r)return;
+
+  const arquivo=new File([r.blob],r.nome,{type:'application/pdf'});
+
+  if(navigator.share && navigator.canShare && navigator.canShare({files:[arquivo]})){
+    try{
+      await navigator.share({
+        title:'Orçamento WevertonCar',
+        text:'Orçamento de serviço',
+        files:[arquivo]
+      });
+    }catch(e){
+      if(e.name!=='AbortError'){
+        alert('Não foi possível abrir o compartilhamento.');
+      }
+    }
+  }else{
+    gerarPDF();
+    alert('O PDF foi salvo no celular. Abra o arquivo e use Compartilhar para enviar pelo WhatsApp.');
+  }
+}
+
+function enviarWhatsAppTexto(){
+  const d=dados();
+
+  if(!d.servico){
+    alert('Digite o serviço que será executado.');
+    return;
+  }
+
+  const mao=valorMaoObra(d);
+  const total=mao+d.valorPecas;
+
+  const texto=
+`*WevertonCar - Orçamento de Serviço*
 Rua São Regis, 310 - Bairro Nova York
 
-Cliente: ${cliente||'Não informado'}
-Carro: ${carro||'Não informado'}${ano?' - '+ano:''}
-Categoria: ${categoria}
-Serviço: ${servico}
-Mão de obra: R$ ${valor.toFixed(2).replace('.',',')}`;
+Cliente: ${d.cliente||'Não informado'}
+Carro: ${d.carro||'Não informado'}${d.ano?' - '+d.ano:''}
+Placa: ${d.placa||'Não informada'}
+Categoria: ${d.categoria}
+
+*Serviço:*
+${d.servico}
+
+*Peças:*
+${d.pecas||'Nenhuma peça informada'}
+
+Mão de obra: ${dinheiro(mao)}
+Peças: ${dinheiro(d.valorPecas)}
+*Total: ${dinheiro(total)}*${d.observacoes?'\n\nObservações:\n'+d.observacoes:''}`;
 
   window.open('https://wa.me/?text='+encodeURIComponent(texto),'_blank');
 }
