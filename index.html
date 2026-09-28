@@ -4,326 +4,182 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WevertonCar - Orçamento</title>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">document.addEventListener('input',e=>{if(e.target.matches('.servico,.minutos,.hora,#carro')) atualizarValores();});
-</script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-*{box-sizing:border-box}
-body{font-family:Arial,sans-serif;background:#111;margin:0;padding:20px;color:#fff}
-.card{max-width:620px;margin:auto;background:#1b1b1b;padding:24px;border-radius:16px;border:2px solid #d40000;box-shadow:0 4px 20px #000}
-h1{margin:0;color:#ff1a1a;text-align:center}
-.logo{text-align:center;font-size:42px;line-height:1}
-.sub{text-align:center;color:#ddd;margin:6px 0 4px}
-.company{text-align:center;color:#bbb;font-size:14px;margin-bottom:20px}
-.section{border-top:1px solid #444;margin-top:20px;padding-top:15px}
-h2{font-size:18px;color:#ff3333;margin:0 0 8px}
-label{display:block;margin-top:12px;font-weight:bold}
-input,select,textarea{width:100%;padding:12px;margin-top:6px;border:1px solid #555;border-radius:10px;background:#292929;color:#fff;font-size:16px}
-textarea{min-height:90px;resize:vertical}
-button{width:100%;padding:13px;margin-top:16px;border:0;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer}
-.primary{background:#d40000;color:#fff}
-.secondary{background:#25D366;color:#fff}
-.pdf{background:#333;color:#fff;border:1px solid #666}
-.result{margin-top:18px;padding:16px;background:#260909;border:1px solid #d40000;border-radius:10px;font-size:18px;line-height:1.6}.servico-item{margin-bottom:18px;padding:14px;background:#222;border:1px solid #444;border-radius:12px}.valor-servico{margin-top:10px;padding:10px;background:#160606;border-radius:8px;font-weight:bold}.remover-servico{background:#555;color:#fff;margin-top:10px;padding:9px}
-small{display:block;margin-top:14px;color:#aaa}
+*{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#111;margin:0;padding:16px;color:#fff}
+.card{max-width:680px;margin:auto;background:#1b1b1b;padding:22px;border-radius:16px;border:2px solid #d40000;box-shadow:0 4px 20px #000}
+h1{margin:0;color:#ff1a1a;text-align:center}.logo{text-align:center;font-size:42px}.sub{text-align:center;color:#ddd}.company{text-align:center;color:#bbb;font-size:14px;margin-bottom:18px}
+.section{border-top:1px solid #444;margin-top:18px;padding-top:14px}h2{font-size:18px;color:#ff3333;margin:0 0 8px}
+label{display:block;margin-top:10px;font-weight:bold}input,select,textarea{width:100%;padding:11px;margin-top:5px;border:1px solid #555;border-radius:9px;background:#292929;color:#fff;font-size:16px}textarea{min-height:75px;resize:vertical}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+button{width:100%;padding:12px;margin-top:12px;border:0;border-radius:9px;font-size:15px;font-weight:bold;cursor:pointer}.primary{background:#d40000;color:#fff}.secondary{background:#25D366;color:#fff}.pdf{background:#333;color:#fff;border:1px solid #666}.dark{background:#222;color:#fff;border:1px solid #555}.danger{background:#7b0000;color:#fff}
+.result{margin-top:16px;padding:14px;background:#260909;border:1px solid #d40000;border-radius:10px;line-height:1.6}.servico-item{margin-bottom:14px;padding:13px;background:#222;border:1px solid #444;border-radius:12px}.valor-servico{margin-top:9px;padding:9px;background:#160606;border-radius:8px;font-weight:bold}.mini{font-size:13px;color:#aaa}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.listbox{max-height:220px;overflow:auto}.record{padding:10px;border:1px solid #444;border-radius:8px;margin-top:7px;background:#222}.record button{width:auto;padding:7px 10px;margin:5px 4px 0 0}.ok{color:#5cff8a}.warn{color:#ffd45c}
+@media(max-width:560px){.grid,.grid3,.actions{grid-template-columns:1fr}}
 </style>
 </head>
-
 <body>
 <div class="card">
-
-<div class="logo">⚙️</div>
-<h1>WevertonCar</h1>
-<div class="sub">Orçamento de Serviço</div>
-<div class="company">Rua São Regis, 310 - Bairro Nova York</div>
+<div class="logo">⚙️</div><h1>WevertonCar</h1><div class="sub">Orçamento de Serviço</div><div class="company">Rua São Regis, 310 - Bairro Nova York</div>
 
 <div class="section">
-<h2>Dados do cliente</h2>
-
-<label>Nome do cliente</label>
-<input id="cliente" placeholder="Nome">
-
-<label>Endereço</label>
-<input id="endereco" placeholder="Endereço do cliente">
-
-<label>Telefone</label>
-<input id="telefone" placeholder="Telefone">
+<h2>Controle do orçamento</h2>
+<div class="grid">
+<div><label>Nº OS / Orçamento</label><input id="os" readonly></div>
+<div><label>Data</label><input id="data" type="date"></div>
+</div>
+<div class="grid">
+<div><label>Entrada</label><input id="entrada" type="datetime-local"></div>
+<div><label>Saída</label><input id="saida" type="datetime-local"></div>
+</div>
+<div class="grid">
+<div><label>KM de entrada</label><input id="kmEntrada" type="number" min="0" placeholder="Ex.: 125430"></div>
+<div><label>KM de saída</label><input id="kmSaida" type="number" min="0" placeholder="Ex.: 125450"></div>
+</div>
+<div class="actions">
+<button class="dark" onclick="agora('entrada')">🕐 Entrada agora</button>
+<button class="dark" onclick="agora('saida')">🕐 Saída agora</button>
+</div>
 </div>
 
-<div class="section">
-<h2>Dados do carro</h2>
-
-<label>Carro / modelo</label>
-<input id="carro" list="carros" placeholder="Ex.: Uno, Golf Sapão">
-
-<datalist id="carros">
-<option value="Uno">
-<option value="Golf Sapão">
-</datalist>
-
-<label>Ano</label>
-<input id="ano" type="number" min="1900" max="2100" placeholder="Ano">
-
-<label>Placa</label>
-<input id="placa" placeholder="Placa">
-
-<label>Categoria</label>
-<select id="categoria">
-<option value="Nacional">Nacional</option>
-<option value="Importado">Importado</option>
-</select>
+<div class="section"><h2>Dados do cliente</h2>
+<label>Nome do cliente</label><input id="cliente" placeholder="Nome">
+<label>Endereço</label><input id="endereco" placeholder="Endereço do cliente">
+<label>Telefone</label><input id="telefone" placeholder="Telefone">
 </div>
 
-<div class="section">
-<h2>Serviços</h2>
-<div id="listaServicos">
-  <div class="servico-item">
-    <label>Serviço 1</label>
-    <textarea class="servico" placeholder="Digite o serviço que será executado"></textarea>
-    <label>Tempo (minutos)</label>
-    <input class="minutos" type="number" min="0" value="30">
-    <label>Valor da hora técnica (R$)</label>
-    <input class="hora" type="number" min="0" step="0.01" value="120">
-    <div class="valor-servico">Mão de obra: R$ 60,00</div>
-  </div>
+<div class="section"><h2>Dados do carro</h2>
+<div class="grid">
+<div><label>Carro / modelo</label><input id="carro" list="carros" placeholder="Ex.: Uno, Golf Sapão"><datalist id="carros"></datalist></div>
+<div><label>Ano</label><input id="ano" type="number" min="1900" max="2100" placeholder="Ano"></div>
 </div>
+<div class="grid">
+<div><label>Placa</label><input id="placa" placeholder="Placa"></div>
+<div><label>Categoria</label><select id="categoria"><option>Nacional</option><option>Importado</option></select></div>
+</div>
+</div>
+
+<div class="section"><h2>Serviços</h2>
+<div class="mini">Digite o serviço. Se estiver cadastrado para o veículo, tempo e valor serão preenchidos automaticamente.</div>
+<div id="listaServicos"></div>
 <button type="button" class="pdf" onclick="adicionarServico()">➕ Adicionar outro serviço</button>
 </div>
 
-<div class="section">
-<h2>Peças</h2>
-
-<label>Peças que serão utilizadas</label>
-<textarea id="pecas" placeholder="Digite uma peça por linha&#10;Ex.:&#10;Bomba d'água&#10;Junta&#10;Aditivo"></textarea>
-
-<label>Valor das peças (R$)</label>
-<input id="valorPecas" type="number" min="0" step="0.01" value="0">
+<div class="section"><h2>Cadastro de mão de obra</h2>
+<div class="grid">
+<div><label>Veículo</label><input id="dbCarro" placeholder="Ex.: Uno"></div>
+<div><label>Serviço</label><input id="dbServico" placeholder="Ex.: Troca de partilha"></div>
+</div>
+<div class="grid">
+<div><label>Tempo (minutos)</label><input id="dbMinutos" type="number" min="0" value="60"></div>
+<div><label>Valor da mão de obra (R$)</label><input id="dbValor" type="number" min="0" step="0.01" value="120"></div>
+</div>
+<div class="actions"><button class="primary" onclick="salvarServicoDB()">💾 Salvar serviço</button><button class="dark" onclick="limparDB()">Limpar campos</button></div>
+<div id="listaDB" class="listbox"></div>
 </div>
 
-<div class="section">
-<h2>Observações</h2>
-<textarea id="observacoes" placeholder="Observações, condições ou informações adicionais"></textarea>
+<div class="section"><h2>Peças</h2>
+<label>Peças que serão utilizadas</label><textarea id="pecas" placeholder="Uma peça por linha"></textarea>
+<label>Valor das peças (R$)</label><input id="valorPecas" type="number" min="0" step="0.01" value="0">
 </div>
+
+<div class="section"><h2>Observações</h2><textarea id="observacoes" placeholder="Observações, condições ou informações adicionais"></textarea></div>
 
 <button class="primary" onclick="calcular()">Calcular orçamento</button>
+<div class="result" id="resultado">Preencha os dados e clique em calcular.</div>
 
-<div class="result" id="resultado">
-Preencha os dados e clique em calcular.
+<div class="section"><h2>Salvar e consultar</h2>
+<div class="actions">
+<button class="primary" onclick="salvarOrcamento()">💾 Salvar orçamento</button>
+<button class="dark" onclick="novoOrcamento()">🆕 Novo orçamento</button>
+</div>
+<label>Consultar pelo Nº OS</label><input id="buscarOS" type="number" min="1" placeholder="Ex.: 12">
+<button class="dark" onclick="buscarOrcamento()">🔎 Abrir orçamento salvo</button>
+<div id="historico" class="listbox"></div>
 </div>
 
+<div class="section"><h2>Backup</h2>
+<div class="actions">
+<button class="dark" onclick="exportarBackup()">⬇️ Exportar backup</button>
+<button class="dark" onclick="document.getElementById('arquivoBackup').click()">⬆️ Importar backup</button>
+</div>
+<input id="arquivoBackup" type="file" accept=".json,application/json" style="display:none" onchange="importarBackup(event)">
+</div>
+
+<div class="actions">
 <button class="pdf" onclick="gerarPDF()">📄 Gerar PDF</button>
 <button class="secondary" onclick="compartilharPDF()">📲 Compartilhar PDF</button>
+</div>
 <button class="pdf" onclick="enviarWhatsAppTexto()">💬 Enviar resumo pelo WhatsApp</button>
-
-<small>
-O serviço e as peças podem ser digitados livremente. O valor da mão de obra é calculado pela hora técnica, salvo quando houver valor cadastrado.
-</small>
-
+<small>Os orçamentos, serviços cadastrados e numeração ficam salvos neste aparelho. Faça backup periodicamente.</small>
 </div>
 
 <script>
-function valorCadastrado(carro, servico){
-  const c=(carro||'').trim().toLowerCase();
-  const x=(servico||'').trim().toLowerCase();
-  if(x==='troca de partilha' && c==='uno') return 120;
-  if(x==='troca de partilha' && (c==='golf sapão'||c==='golf sapao')) return 150;
-  return null;
+const KOS='wevertoncar_proximo_os', KDB='wevertoncar_servicos', KREC='wevertoncar_orcamentos';
+let editDBId=null;
+function dinheiro(v){return Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});}
+function hoje(){return new Date().toISOString().slice(0,10);}
+function localDateTime(){const d=new Date(),z=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate())+'T'+z(d.getHours())+':'+z(d.getMinutes());}
+function getDB(){return JSON.parse(localStorage.getItem(KDB)||'[]');}
+function saveDB(a){localStorage.setItem(KDB,JSON.stringify(a));}
+function getRecords(){return JSON.parse(localStorage.getItem(KREC)||'[]');}
+function nextOS(){let n=Number(localStorage.getItem(KOS)||1);localStorage.setItem(KOS,String(n+1));return n;}
+function setInitial(){document.getElementById('os').value=nextOS();document.getElementById('data').value=hoje();document.getElementById('entrada').value=localDateTime();document.getElementById('saida').value='';document.getElementById('listaServicos').innerHTML='';adicionarServico();}
+function agora(id){document.getElementById(id).value=localDateTime();}
+function norm(s){return (s||'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+function valorCadastrado(carro,servico){
+ const hit=getDB().find(x=>norm(x.carro)===norm(carro)&&norm(x.servico)===norm(servico));
+ return hit?{valor:Number(hit.valor),minutos:Number(hit.minutos)}:null;
 }
-function lerServicos(){return Array.from(document.querySelectorAll('.servico-item')).map(i=>({servico:i.querySelector('.servico').value.trim(),minutos:Number(i.querySelector('.minutos').value)||0,hora:Number(i.querySelector('.hora').value)||0})).filter(x=>x.servico);}
-function valorServico(d,s){const c=valorCadastrado(d.carro,s.servico);return c!==null?c:(s.minutos/60)*s.hora;}
-function atualizarValores(){const d={carro:document.getElementById('carro').value.trim()};document.querySelectorAll('.servico-item').forEach(i=>{const s={servico:i.querySelector('.servico').value.trim(),minutos:Number(i.querySelector('.minutos').value)||0,hora:Number(i.querySelector('.hora').value)||0};i.querySelector('.valor-servico').textContent='Mão de obra: '+dinheiro(valorServico(d,s));});}
-function adicionarServico(){const l=document.getElementById('listaServicos'),n=l.children.length+1,i=document.createElement('div');i.className='servico-item';i.innerHTML=`<label>Serviço ${n}</label><textarea class="servico" placeholder="Digite o serviço que será executado"></textarea><label>Tempo (minutos)</label><input class="minutos" type="number" min="0" value="30"><label>Valor da hora técnica (R$)</label><input class="hora" type="number" min="0" step="0.01" value="120"><div class="valor-servico">Mão de obra: R$ 60,00</div><button type="button" class="remover-servico" onclick="removerServico(this)">🗑️ Remover serviço</button>`;l.appendChild(i);atualizarValores();}
-function removerServico(b){b.closest('.servico-item').remove();document.querySelectorAll('.servico-item').forEach((i,n)=>i.querySelector('label').textContent='Serviço '+(n+1));atualizarValores();}
-function dados(){return {cliente:document.getElementById('cliente').value.trim(),endereco:document.getElementById('endereco').value.trim(),telefone:document.getElementById('telefone').value.trim(),carro:document.getElementById('carro').value.trim(),ano:document.getElementById('ano').value.trim(),placa:document.getElementById('placa').value.trim(),categoria:document.getElementById('categoria').value,servicos:lerServicos(),pecas:document.getElementById('pecas').value.trim(),valorPecas:Number(document.getElementById('valorPecas').value)||0,observacoes:document.getElementById('observacoes').value.trim()};}
+function adicionarServico(data=null){
+ const l=document.getElementById('listaServicos'),n=l.children.length+1,i=document.createElement('div');i.className='servico-item';
+ i.innerHTML='<label>Serviço '+n+'</label><textarea class="servico" placeholder="Digite o serviço que será executado"></textarea><div class="grid"><div><label>Tempo (minutos)</label><input class="minutos" type="number" min="0" value="30"></div><div><label>Valor da hora técnica (R$)</label><input class="hora" type="number" min="0" step="0.01" value="120"></div></div><div class="valor-servico">Mão de obra: R$ 60,00</div><button type="button" class="danger remover" onclick="removerServico(this)">🗑️ Remover serviço</button>';
+ l.appendChild(i);
+ if(data){i.querySelector('.servico').value=data.servico||'';i.querySelector('.minutos').value=data.minutos??30;i.querySelector('.hora').value=data.hora??120;}
+ atualizarValores();
+}
+function removerServico(b){b.closest('.servico-item').remove();document.querySelectorAll('.servico-item label:first-child').forEach((x,n)=>x.textContent='Serviço '+(n+1));atualizarValores();}
+function lerServicos(){return [...document.querySelectorAll('.servico-item')].map(i=>({servico:i.querySelector('.servico').value.trim(),minutos:Number(i.querySelector('.minutos').value)||0,hora:Number(i.querySelector('.hora').value)||0})).filter(x=>x.servico);}
+function valorServico(d,s){const c=valorCadastrado(d.carro,s.servico);return c?c.valor:(s.minutos/60)*s.hora;}
+function atualizarValores(){const carro=document.getElementById('carro').value;document.querySelectorAll('.servico-item').forEach(i=>{const s={servico:i.querySelector('.servico').value,minutos:Number(i.querySelector('.minutos').value)||0,hora:Number(i.querySelector('.hora').value)||0};const c=valorCadastrado(carro,s.servico);if(c){i.querySelector('.minutos').value=c.minutos;i.querySelector('.valor-servico').innerHTML='Mão de obra cadastrada: <b>'+dinheiro(c.valor)+'</b>';}else{i.querySelector('.valor-servico').textContent='Mão de obra: '+dinheiro((s.minutos/60)*s.hora);}});}
+function dados(){return {os:Number(document.getElementById('os').value),data:document.getElementById('data').value,entrada:document.getElementById('entrada').value,saida:document.getElementById('saida').value,kmEntrada:document.getElementById('kmEntrada').value,kmSaida:document.getElementById('kmSaida').value,cliente:document.getElementById('cliente').value.trim(),endereco:document.getElementById('endereco').value.trim(),telefone:document.getElementById('telefone').value.trim(),carro:document.getElementById('carro').value.trim(),ano:document.getElementById('ano').value.trim(),placa:document.getElementById('placa').value.trim(),categoria:document.getElementById('categoria').value,servicos:lerServicos(),pecas:document.getElementById('pecas').value.trim(),valorPecas:Number(document.getElementById('valorPecas').value)||0,observacoes:document.getElementById('observacoes').value.trim()};}
 function totalMaoObra(d){return d.servicos.reduce((t,s)=>t+valorServico(d,s),0);}
-
-function dinheiro(v){
-  return Number(v||0).toLocaleString('pt-BR',{
-    style:'currency',
-    currency:'BRL'
-  });
-}
-
-function calcular(){const d=dados();if(!d.servicos.length){alert('Digite pelo menos um serviço que será executado.');return;}const mao=totalMaoObra(d),total=mao+d.valorPecas;document.getElementById('resultado').innerHTML='<b>Serviços:</b><br>'+d.servicos.map((x,n)=>(n+1)+'. '+x.servico+' — <b>'+dinheiro(valorServico(d,x))+'</b>').join('<br>')+'<br><br>Mão de obra total: <b>'+dinheiro(mao)+'</b><br>Peças: <b>'+dinheiro(d.valorPecas)+'</b><br>Total geral: <b>'+dinheiro(total)+'</b>';}
-
-function criarPDF(){
-  const d=dados();
-
-  if(!d.servicos.length){
-    alert('Digite pelo menos um serviço que será executado.');
-    return null;
-  }
-
-  const {jsPDF}=window.jspdf;
-  const pdf=new jsPDF();
-  let y=18;
-
-  pdf.setFont('helvetica','bold');
-  pdf.setFontSize(22);
-  pdf.text('⚙',105,y,{align:'center'});
-  y+=10;
-
-  pdf.setFontSize(18);
-  pdf.text('WevertonCar',105,y,{align:'center'});
-  y+=7;
-
-  pdf.setFontSize(11);
-  pdf.setFont('helvetica','normal');
-  pdf.text('ORÇAMENTO DE SERVIÇO',105,y,{align:'center'});
-  y+=7;
-  pdf.text('Rua São Regis, 310 - Bairro Nova York',105,y,{align:'center'});
-  y+=10;
-
-  pdf.line(15,y,195,y);
-  y+=10;
-
-  function titulo(t){
-    pdf.setFont('helvetica','bold');
-    pdf.setFontSize(11);
-    pdf.text(t,15,y);
-    y+=6;
-    pdf.setFont('helvetica','normal');
-  }
-
-  function textoQuebrado(t){
-    const linhas=pdf.splitTextToSize(t||'-',175);
-    pdf.text(linhas,15,y);
-    y+=linhas.length*5+5;
-  }
-
-  titulo('DADOS DO CLIENTE');
-  textoQuebrado('Cliente: '+(d.cliente||'-'));
-  textoQuebrado('Endereço: '+(d.endereco||'-'));
-  textoQuebrado('Telefone: '+(d.telefone||'-'));
-
-  titulo('DADOS DO CARRO');
-  textoQuebrado('Carro: '+(d.carro||'-'));
-  textoQuebrado('Ano: '+(d.ano||'-'));
-  textoQuebrado('Placa: '+(d.placa||'-'));
-  textoQuebrado('Categoria: '+d.categoria);
-
-  titulo('SERVIÇO A EXECUTAR');
-  d.servicos.forEach((x,i)=>{ textoQuebrado((i+1)+'. '+x.servico); textoQuebrado('Mão de obra: '+dinheiro(valorServico(d,x))); });
-
-  titulo('PEÇAS UTILIZADAS');
-  textoQuebrado(d.pecas||'Nenhuma peça informada');
-
-  const mao=totalMaoObra(d);
-  const total=mao+d.valorPecas;
-
-  titulo('VALORES');
-
-  pdf.text('Mão de obra:',15,y);
-  pdf.text(dinheiro(mao),195,y,{align:'right'});
-  y+=7;
-
-  pdf.text('Peças:',15,y);
-  pdf.text(dinheiro(d.valorPecas),195,y,{align:'right'});
-  y+=8;
-
-  pdf.line(15,y,195,y);
-  y+=8;
-
-  pdf.setFont('helvetica','bold');
-  pdf.setFontSize(13);
-  pdf.text('TOTAL:',15,y);
-  pdf.text(dinheiro(total),195,y,{align:'right'});
-  y+=12;
-
-  if(d.observacoes){
-    titulo('OBSERVAÇÕES');
-    textoQuebrado(d.observacoes);
-  }
-
-  pdf.setFont('helvetica','normal');
-  pdf.setFontSize(8);
-  pdf.text('Orçamento sujeito à avaliação e confirmação do serviço.',105,285,{align:'center'});
-
-  const nome=(d.cliente||'Cliente')
-    .replace(/[^a-zA-Z0-9À-ÿ ]/g,'')
-    .replace(/\s+/g,'_');
-
-  return {
-    blob:pdf.output('blob'),
-    nome:'Orcamento_'+nome+'.pdf'
-  };
-}
-
-function gerarPDF(){
-  const r=criarPDF();
-  if(!r)return;
-
-  const url=URL.createObjectURL(r.blob);
-  const a=document.createElement('a');
-  a.href=url;
-  a.download=r.nome;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),1000);
-
-  document.getElementById('resultado').innerHTML +=
-    '<small>PDF gerado com sucesso.</small>';
-}
-
-async function compartilharPDF(){
-  const r=criarPDF();
-  if(!r)return;
-
-  const arquivo=new File([r.blob],r.nome,{type:'application/pdf'});
-
-  if(navigator.share && navigator.canShare && navigator.canShare({files:[arquivo]})){
-    try{
-      await navigator.share({
-        title:'Orçamento WevertonCar',
-        text:'Orçamento de serviço',
-        files:[arquivo]
-      });
-    }catch(e){
-      if(e.name!=='AbortError'){
-        alert('Não foi possível abrir o compartilhamento.');
-      }
-    }
-  }else{
-    gerarPDF();
-    alert('O PDF foi salvo no celular. Abra o arquivo e use Compartilhar para enviar pelo WhatsApp.');
-  }
-}
-
-function enviarWhatsAppTexto(){
-  const d=dados();
-
-  if(!d.servicos.length){
-    alert('Digite pelo menos um serviço que será executado.');
-    return;
-  }
-
-  const mao=totalMaoObra(d);
-  const total=mao+d.valorPecas;
-
-  const texto=
-`*WevertonCar - Orçamento de Serviço*
-Rua São Regis, 310 - Bairro Nova York
-
-Cliente: ${d.cliente||'Não informado'}
-Carro: ${d.carro||'Não informado'}${d.ano?' - '+d.ano:''}
-Placa: ${d.placa||'Não informada'}
-Categoria: ${d.categoria}
-
-*Serviço:*
-${d.servicos.map((x,i)=>(i+1)+'. '+x.servico+' - '+dinheiro(valorServico(d,x))).join('\n')}
-
-*Peças:*
-${d.pecas||'Nenhuma peça informada'}
-
-Mão de obra: ${dinheiro(mao)}
-Peças: ${dinheiro(d.valorPecas)}
-*Total: ${dinheiro(total)}*${d.observacoes?'\n\nObservações:\n'+d.observacoes:''}`;
-
-  window.open('https://wa.me/?text='+encodeURIComponent(texto),'_blank');
-}
-document.addEventListener('input',e=>{if(e.target.matches('.servico,.minutos,.hora,#carro')) atualizarValores();});
+function calcular(){const d=dados();if(!d.servicos.length){alert('Digite pelo menos um serviço.');return;}const mao=totalMaoObra(d),total=mao+d.valorPecas;document.getElementById('resultado').innerHTML='<b>OS '+d.os+'</b><br>'+d.servicos.map((x,n)=>(n+1)+'. '+x.servico+' — <b>'+dinheiro(valorServico(d,x))+'</b>').join('<br>')+'<br><br>Mão de obra: <b>'+dinheiro(mao)+'</b><br>Peças: <b>'+dinheiro(d.valorPecas)+'</b><br><b>Total geral: '+dinheiro(total)+'</b>';return d;}
+function preencher(d){for(const id of ['os','data','entrada','saida','kmEntrada','kmSaida','cliente','endereco','telefone','carro','ano','placa','pecas','valorPecas','observacoes'])if(document.getElementById(id))document.getElementById(id).value=d[id]??'';document.getElementById('categoria').value=d.categoria||'Nacional';document.getElementById('listaServicos').innerHTML='';(d.servicos||[]).forEach(x=>adicionarServico(x));atualizarValores();calcular();}
+function salvarOrcamento(){const d=calcular();if(!d)return;let r=getRecords().filter(x=>Number(x.os)!==Number(d.os));r.push({...d,salvoEm:new Date().toISOString()});r.sort((a,b)=>a.os-b.os);localStorage.setItem(KREC,JSON.stringify(r));document.getElementById('resultado').innerHTML+='<br><span class="ok">✓ Orçamento OS '+d.os+' salvo neste aparelho.</span>';renderHistorico();}
+function buscarOrcamento(){const n=Number(document.getElementById('buscarOS').value);const d=getRecords().find(x=>Number(x.os)===n);if(!d){alert('OS não encontrada.');return;}preencher(d);}
+function renderHistorico(){const box=document.getElementById('historico'),r=getRecords().slice().sort((a,b)=>b.os-a.os).slice(0,20);box.innerHTML=r.length?r.map(x=>'<div class="record"><b>OS '+x.os+'</b> — '+(x.cliente||'Sem cliente')+' — '+(x.carro||'Sem carro')+'<br><span class="mini">'+(x.data||'')+'</span><br><button class="dark" onclick="carregarOS('+x.os+')">Abrir</button><button class="danger" onclick="excluirOS('+x.os+')">Excluir</button></div>').join(''):'<div class="mini">Nenhum orçamento salvo.</div>';}
+function carregarOS(n){const d=getRecords().find(x=>Number(x.os)===Number(n));if(d)preencher(d);}
+function excluirOS(n){if(!confirm('Excluir a OS '+n+'?'))return;localStorage.setItem(KREC,JSON.stringify(getRecords().filter(x=>Number(x.os)!==Number(n))));renderHistorico();}
+function novoOrcamento(){if(!confirm('Começar um novo orçamento?'))return;document.querySelectorAll('input,textarea').forEach(e=>{if(!['os','data','entrada'].includes(e.id))e.value='';});document.getElementById('categoria').value='Nacional';document.getElementById('valorPecas').value=0;setInitial();document.getElementById('resultado').textContent='Novo orçamento iniciado.';}
+function salvarServicoDB(){const carro=document.getElementById('dbCarro').value.trim(),servico=document.getElementById('dbServico').value.trim(),minutos=Number(document.getElementById('dbMinutos').value)||0,valor=Number(document.getElementById('dbValor').value)||0;if(!carro||!servico){alert('Informe veículo e serviço.');return;}let a=getDB();if(editDBId){a=a.map(x=>x.id===editDBId?{...x,carro,servico,minutos,valor}:x);editDBId=null;}else{a.push({id:Date.now(),carro,servico,minutos,valor});}saveDB(a);limparDB();renderDB();atualizarValores();}
+function limparDB(){editDBId=null;['dbCarro','dbServico'].forEach(id=>document.getElementById(id).value='');document.getElementById('dbMinutos').value=60;document.getElementById('dbValor').value=120;}
+function editarDB(id){const x=getDB().find(v=>v.id===id);if(!x)return;editDBId=id;document.getElementById('dbCarro').value=x.carro;document.getElementById('dbServico').value=x.servico;document.getElementById('dbMinutos').value=x.minutos;document.getElementById('dbValor').value=x.valor;}
+function excluirDB(id){if(!confirm('Excluir este serviço cadastrado?'))return;saveDB(getDB().filter(x=>x.id!==id));renderDB();atualizarValores();}
+function renderDB(){document.getElementById('listaDB').innerHTML=getDB().map(x=>'<div class="record"><b>'+x.carro+'</b> — '+x.servico+'<br>'+x.minutos+' min — '+dinheiro(x.valor)+'<br><button class="dark" onclick="editarDB('+x.id+')">Editar</button><button class="danger" onclick="excluirDB('+x.id+')">Excluir</button></div>').join('')||'<div class="mini">Nenhum serviço cadastrado.</div>';document.getElementById('carros').innerHTML=[...new Set(getDB().map(x=>x.carro))].map(x=>'<option value="'+esc(x)+'">').join('');}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function exportarBackup(){const backup={versao:1,exportadoEm:new Date().toISOString(),proximoOS:Number(localStorage.getItem(KOS)||1),servicos:getDB(),orcamentos:getRecords()};const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='backup_wevertoncar_'+hoje()+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
+function importarBackup(e){const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const b=JSON.parse(rd.result);if(!Array.isArray(b.servicos)||!Array.isArray(b.orcamentos))throw Error();if(!confirm('Importar backup e substituir os dados atuais?'))return;saveDB(b.servicos);localStorage.setItem(KREC,JSON.stringify(b.orcamentos));localStorage.setItem(KOS,String(Number(b.proximoOS)||1));renderDB();renderHistorico();alert('Backup importado com sucesso.');}catch(_){alert('Arquivo de backup inválido.');}e.target.value='';};rd.readAsText(f);}
+function fmtDT(v){if(!v)return '-';const [d,t]=v.split('T');return d.split('-').reverse().join('/')+' '+(t||'');}
+function criarPDF(){const d=dados();if(!d.servicos.length){alert('Digite pelo menos um serviço.');return null;}const {jsPDF}=window.jspdf,pdf=new jsPDF();let y=16;const bottom=278;
+function pagina(){pdf.setFont('helvetica','normal');pdf.setFontSize(8);pdf.text('WevertonCar — OS '+d.os+' — Página '+pdf.getNumberOfPages(),105,287,{align:'center'});pdf.addPage();y=16;}
+function need(h=8){if(y+h>bottom)pagina();}
+function titulo(t){need(12);pdf.setFont('helvetica','bold');pdf.setFontSize(11);pdf.text(t,15,y);y+=6;pdf.setFont('helvetica','normal');}
+function texto(t){const ls=pdf.splitTextToSize(String(t||'-'),175);need(ls.length*5+5);pdf.text(ls,15,y);y+=ls.length*5+5;}
+pdf.setFont('helvetica','bold');pdf.setFontSize(20);pdf.text('WevertonCar',105,y,{align:'center'});y+=8;pdf.setFontSize(11);pdf.setFont('helvetica','normal');pdf.text('ORÇAMENTO DE SERVIÇO',105,y,{align:'center'});y+=6;pdf.text('Rua São Regis, 310 - Bairro Nova York',105,y,{align:'center'});y+=10;pdf.line(15,y,195,y);y+=8;
+titulo('CONTROLE');texto('OS / Orçamento: '+d.os);texto('Data: '+(d.data||'-'));texto('Entrada: '+fmtDT(d.entrada));texto('Saída: '+fmtDT(d.saida));texto('KM entrada: '+(d.kmEntrada||'-')+'   KM saída: '+(d.kmSaida||'-'));
+titulo('DADOS DO CLIENTE');texto('Cliente: '+(d.cliente||'-'));texto('Endereço: '+(d.endereco||'-'));texto('Telefone: '+(d.telefone||'-'));
+titulo('DADOS DO CARRO');texto('Carro: '+(d.carro||'-')+'   Ano: '+(d.ano||'-'));texto('Placa: '+(d.placa||'-')+'   Categoria: '+d.categoria);
+titulo('SERVIÇOS');d.servicos.forEach((x,i)=>{texto((i+1)+'. '+x.servico);texto('Tempo: '+x.minutos+' min | Mão de obra: '+dinheiro(valorServico(d,x)));});
+titulo('PEÇAS');texto(d.pecas||'Nenhuma peça informada');texto('Valor das peças: '+dinheiro(d.valorPecas));
+const mao=totalMaoObra(d),total=mao+d.valorPecas;titulo('VALORES');texto('Mão de obra: '+dinheiro(mao));texto('Peças: '+dinheiro(d.valorPecas));need(12);pdf.setFont('helvetica','bold');pdf.setFontSize(14);pdf.text('TOTAL: '+dinheiro(total),15,y);y+=10;
+if(d.observacoes){titulo('OBSERVAÇÕES');texto(d.observacoes);}pdf.setFont('helvetica','normal');pdf.setFontSize(8);pdf.text('Orçamento sujeito à avaliação e confirmação do serviço.',105,279,{align:'center'});pdf.setFontSize(8);pdf.text('WevertonCar — OS '+d.os+' — Página '+pdf.getNumberOfPages(),105,287,{align:'center'});
+const nome=(d.cliente||'Cliente').replace(/[^a-zA-Z0-9À-ÿ ]/g,'').replace(/\s+/g,'_');return {blob:pdf.output('blob'),nome:'OS_'+d.os+'_Orcamento_'+nome+'.pdf'};}
+function gerarPDF(){const r=criarPDF();if(!r)return;const a=document.createElement('a');a.href=URL.createObjectURL(r.blob);a.download=r.nome;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);document.getElementById('resultado').innerHTML+='<br><small>✓ PDF gerado.</small>';}
+async function compartilharPDF(){const r=criarPDF();if(!r)return;const arq=new File([r.blob],r.nome,{type:'application/pdf'});if(navigator.share&&navigator.canShare&&navigator.canShare({files:[arq]})){try{await navigator.share({title:'WevertonCar OS '+dados().os,text:'Orçamento de serviço',files:[arq]});}catch(e){if(e.name!=='AbortError')alert('Não foi possível compartilhar.');}}else{gerarPDF();alert('PDF salvo. Abra o arquivo e use Compartilhar.');}}
+function enviarWhatsAppTexto(){const d=dados();if(!d.servicos.length){alert('Digite pelo menos um serviço.');return;}const mao=totalMaoObra(d),total=mao+d.valorPecas;const texto='*WevertonCar - Orçamento de Serviço*\\nRua São Regis, 310 - Bairro Nova York\\n\\n*OS: '+d.os+'*\\nData: '+(d.data||'-')+'\\nEntrada: '+fmtDT(d.entrada)+'\\nSaída: '+fmtDT(d.saida)+'\\nKM entrada: '+(d.kmEntrada||'-')+' | KM saída: '+(d.kmSaida||'-')+'\\n\\nCliente: '+(d.cliente||'Não informado')+'\\nCarro: '+(d.carro||'Não informado')+(d.ano?' - '+d.ano:'')+'\\nPlaca: '+(d.placa||'Não informada')+'\\nCategoria: '+d.categoria+'\\n\\n*Serviços:*\\n'+d.servicos.map((x,i)=>(i+1)+'. '+x.servico+' - '+dinheiro(valorServico(d,x))).join('\\n')+'\\n\\n*Peças:*\\n'+(d.pecas||'Nenhuma peça informada')+'\\n\\nMão de obra: '+dinheiro(mao)+'\\nPeças: '+dinheiro(d.valorPecas)+'\\n*Total: '+dinheiro(total)+'*'+(d.observacoes?'\\n\\nObservações:\\n'+d.observacoes:'');window.open('https://wa.me/?text='+encodeURIComponent(texto),'_blank');}
+document.addEventListener('input',e=>{if(e.target.matches('.servico,.minutos,.hora,#carro'))atualizarValores();});
+if(!getDB().length)saveDB([{id:1,carro:'Uno',servico:'Troca de partilha',minutos:60,valor:120},{id:2,carro:'Golf Sapão',servico:'Troca de partilha',minutos:60,valor:150}]);
+setInitial();renderDB();renderHistorico();
 </script>
 </body>
 </html>
