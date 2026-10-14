@@ -6,149 +6,800 @@
 <title>WevertonCar - Orçamento</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-*{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#111;margin:0;padding:16px;color:#fff}
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#111;margin:0;padding:16px;color:#fff}
 .card{max-width:720px;margin:auto;background:#1b1b1b;padding:20px;border-radius:16px;border:2px solid #d40000;box-shadow:0 4px 20px #000}
-h1{margin:0;color:#ff1a1a;text-align:center}.logo{text-align:center;font-size:42px}.sub{text-align:center;color:#ddd}.company{text-align:center;color:#bbb;font-size:14px;margin-bottom:18px}
-.section{border-top:1px solid #444;margin-top:18px;padding-top:14px}h2{font-size:18px;color:#ff3333;margin:0 0 8px}
-label{display:block;margin-top:10px;font-weight:bold}input,select,textarea{width:100%;padding:11px;margin-top:5px;border:1px solid #555;border-radius:9px;background:#292929;color:#fff;font-size:16px}textarea{min-height:75px;resize:vertical}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}button{width:100%;padding:12px;margin-top:12px;border:0;border-radius:9px;font-size:15px;font-weight:bold;cursor:pointer}
-.primary{background:#d40000;color:#fff}.secondary{background:#25D366;color:#fff}.pdf{background:#333;color:#fff;border:1px solid #666}.dark{background:#222;color:#fff;border:1px solid #555}.danger{background:#7b0000;color:#fff}
+h1{margin:0;color:#ff1a1a;text-align:center}
+.logo{text-align:center;font-size:42px}
+.sub{text-align:center;color:#ddd}
+.company{text-align:center;color:#bbb;font-size:14px;margin-bottom:18px}
+.section{border-top:1px solid #444;margin-top:18px;padding-top:14px}
+h2{font-size:18px;color:#ff3333;margin:0 0 8px}
+label{display:block;margin-top:10px;font-weight:bold}
+input,select,textarea{width:100%;padding:11px;margin-top:5px;border:1px solid #555;border-radius:9px;background:#292929;color:#fff;font-size:16px}
+textarea{min-height:75px;resize:vertical}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button{width:100%;padding:12px;margin-top:12px;border:0;border-radius:9px;font-size:15px;font-weight:bold;cursor:pointer}
+.primary{background:#d40000;color:#fff}
+.secondary{background:#25D366;color:#fff}
+.pdf{background:#333;color:#fff;border:1px solid #666}
+.dark{background:#222;color:#fff;border:1px solid #555}
+.danger{background:#7b0000;color:#fff}
 .result{margin-top:16px;padding:14px;background:#260909;border:1px solid #d40000;border-radius:10px;line-height:1.6;overflow-wrap:anywhere}
-.servico-item{margin-bottom:14px;padding:13px;background:#222;border:1px solid #444;border-radius:12px}.valor-servico{margin-top:9px;padding:9px;background:#160606;border-radius:8px;font-weight:bold}
-.mini{font-size:13px;color:#aaa}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.listbox{max-height:250px;overflow:auto}.record{padding:10px;border:1px solid #444;border-radius:8px;margin-top:7px;background:#222;overflow-wrap:anywhere}.record button{width:auto;padding:7px 10px;margin:5px 4px 0 0}.ok{color:#5cff8a}
+.servico-item{margin-bottom:14px;padding:13px;background:#222;border:1px solid #444;border-radius:12px}
+.valor-servico{margin-top:9px;padding:9px;background:#160606;border-radius:8px;font-weight:bold}
+.mini{font-size:13px;color:#aaa}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.listbox{max-height:250px;overflow:auto}
+.record{padding:10px;border:1px solid #444;border-radius:8px;margin-top:7px;background:#222;overflow-wrap:anywhere}
+.record button{width:auto;padding:7px 10px;margin:5px 4px 0 0}
+.ok{color:#5cff8a}
 @media(max-width:560px){.grid,.actions{grid-template-columns:1fr}.card{padding:13px}}
 </style>
 </head>
 <body>
 <div class="card">
-<div class="logo">⚙️</div><h1>WevertonCar</h1><div class="sub">Orçamento de Serviço / Ordem de Serviço</div><div class="company">Rua São Regis, 310 - Bairro Nova York</div>
+<div class="logo">⚙️</div>
+<h1>WevertonCar</h1>
+<div class="sub">Orçamento de Serviço / Ordem de Serviço</div>
+<div class="company">Rua São Regis, 310 - Bairro Nova York</div>
 
-<div class="section"><h2>Controle do orçamento</h2>
-<div class="grid"><div><label>Nº OS / Orçamento</label><input id="os" readonly></div><div><label>Data</label><input id="data" type="date"></div></div>
-<div class="grid"><div><label>Entrada</label><input id="entrada" type="datetime-local"></div><div><label>Saída</label><input id="saida" type="datetime-local"></div></div>
-<div class="grid"><div><label>KM de entrada</label><input id="kmEntrada" type="number" min="0" placeholder="Ex.: 125430"></div><div><label>KM de saída</label><input id="kmSaida" type="number" min="0" placeholder="Ex.: 125450"></div></div>
+<div class="section">
+<h2>Controle do orçamento</h2>
+<div class="grid">
+<div><label>Nº OS / Orçamento</label><input id="os" readonly></div>
+<div><label>Data</label><input id="data" type="date"></div>
+</div>
+<div class="grid">
+<div><label>Entrada</label><input id="entrada" type="datetime-local"></div>
+<div><label>Saída</label><input id="saida" type="datetime-local"></div>
+</div>
+<div class="grid">
+<div><label>KM de entrada</label><input id="kmEntrada" type="number" min="0"></div>
+<div><label>KM de saída</label><input id="kmSaida" type="number" min="0"></div>
+</div>
 </div>
 
-<div class="section"><h2>Dados do cliente</h2>
-<label>Nome do cliente</label><input id="cliente" list="clientes" placeholder="Nome do cliente"><datalist id="clientes"></datalist>
-<label>Endereço</label><input id="endereco" placeholder="Endereço do cliente"><label>Telefone</label><input id="telefone" placeholder="Telefone">
+<div class="section">
+<h2>Dados do cliente</h2>
+<label>Nome do cliente</label>
+<input id="cliente" list="clientes" placeholder="Nome do cliente">
+<datalist id="clientes"></datalist>
+<label>Endereço</label><input id="endereco">
+<label>Telefone</label><input id="telefone">
 </div>
 
-<div class="section"><h2>Dados do carro</h2>
-<div class="grid"><div><label>Carro / modelo</label><input id="carro" list="carros" placeholder="Ex.: Uno, Golf Sapão"><datalist id="carros"></datalist></div><div><label>Ano</label><input id="ano" type="number" min="1900" max="2100" placeholder="Ano"></div></div>
-<div class="grid"><div><label>Placa</label><input id="placa" placeholder="Placa"></div><div><label>Categoria</label><select id="categoria"><option>Nacional</option><option>Importado</option></select></div></div>
+<div class="section">
+<h2>Dados do carro</h2>
+<div class="grid">
+<div><label>Marca / Modelo</label><input id="carro" list="carros" placeholder="Ex.: Fiat Uno"><datalist id="carros"></datalist></div>
+<div><label>Ano</label><input id="ano" type="number" min="1900" max="2100"></div>
+</div>
+<div class="grid">
+<div><label>Placa</label><input id="placa"></div>
+<div><label>Categoria</label>
+<select id="categoria"><option>Nacional</option><option>Importado</option></select>
+</div>
+</div>
+<div><label>Motor</label><input id="motor" placeholder="Ex.: 1.6 16V"></div>
 </div>
 
-<div class="section"><h2>Serviços</h2><div class="mini">Pesquise e selecione um serviço cadastrado para preencher tempo e valor automaticamente. Também pode digitar um serviço manualmente.</div>
-<div id="listaServicos"></div><button type="button" class="pdf" onclick="adicionarServico()">➕ Adicionar outro serviço</button>
+<div class="section">
+<h2>Banco de carros</h2>
+<div class="mini">Cadastre veículos para reutilizar marca, modelo, ano, motor e categoria.</div>
+<label>Pesquisar carros cadastrados</label>
+<input id="pesquisaCarro" placeholder="Marca, modelo, ano ou motor" oninput="renderCarros()">
+<div id="listaCarros" class="listbox"></div>
+<div class="grid">
+<div><label>Marca</label><input id="carMarca" placeholder="Ex.: Fiat"></div>
+<div><label>Modelo</label><input id="carModelo" placeholder="Ex.: Uno"></div>
+</div>
+<div class="grid">
+<div><label>Ano</label><input id="carAno" type="number" min="1900" max="2100"></div>
+<div><label>Motor</label><input id="carMotor" placeholder="Ex.: 1.0 8V"></div>
+</div>
+<label>Categoria</label>
+<select id="carCategoria"><option>Nacional</option><option>Importado</option></select>
+<div class="actions">
+<button class="primary" onclick="salvarCarro()">💾 Salvar carro</button>
+<button class="dark" onclick="limparCarro()">Limpar campos</button>
+</div>
 </div>
 
-<div class="section"><h2>Banco de mão de obra</h2>
-<label>Pesquisar serviços cadastrados</label><input id="pesquisaDB" placeholder="Digite veículo ou serviço..." oninput="renderDB()">
+<div class="section">
+<h2>Serviços</h2>
+<div class="mini">Escolha um serviço do banco ou digite manualmente. O valor do orçamento pode ser alterado sem modificar o banco.</div>
+<div id="listaServicos"></div>
+<button type="button" class="pdf" onclick="adicionarServico()">➕ Adicionar outro serviço</button>
+</div>
+
+<div class="section">
+<h2>Banco de mão de obra</h2>
+<label>Pesquisar serviços cadastrados</label>
+<input id="pesquisaDB" placeholder="Digite veículo ou serviço..." oninput="renderDB()">
 <div id="listaDB" class="listbox"></div>
-<div class="section"><h2 id="tituloDB">Cadastrar serviço</h2>
-<div class="grid"><div><label>Veículo (deixe vazio para todos)</label><input id="dbCarro" placeholder="Ex.: Uno"></div><div><label>Serviço</label><input id="dbServico" placeholder="Ex.: Troca de pastilha"></div></div>
-<div class="grid"><div><label>Tempo (minutos)</label><input id="dbMinutos" type="number" min="0" value="60"></div><div><label>Valor da mão de obra (R$)</label><input id="dbValor" type="number" min="0" step="0.01" value="120"></div></div>
-<div class="actions"><button class="primary" onclick="salvarServicoDB()">💾 Salvar serviço</button><button class="dark" onclick="limparDB()">Limpar campos</button></div>
-</div></div>
+<div class="section">
+<h2 id="tituloDB">Cadastrar serviço</h2>
+<div class="grid">
+<div><label>Veículo (vazio = todos)</label><input id="dbCarro" placeholder="Ex.: Uno"></div>
+<div><label>Serviço</label><input id="dbServico" placeholder="Ex.: Troca de correia"></div>
+</div>
+<div class="grid">
+<div><label>Tempo (minutos)</label><input id="dbMinutos" type="number" min="0" value="60"></div>
+<div><label>Valor da mão de obra (R$)</label><input id="dbValor" type="number" min="0" step=".01" value="120"></div>
+</div>
+<div class="actions">
+<button class="primary" onclick="salvarServicoDB()">💾 Salvar serviço</button>
+<button class="dark" onclick="limparDB()">Limpar campos</button>
+</div>
+</div>
+</div>
 
-<div class="section"><h2>Peças</h2><label>Peças que serão utilizadas</label><textarea id="pecas" placeholder="Uma peça por linha"></textarea><label>Valor das peças (R$)</label><input id="valorPecas" type="number" min="0" step="0.01" value="0"></div>
-<div class="section"><h2>Observações</h2><textarea id="observacoes" placeholder="Observações, condições ou informações adicionais"></textarea></div>
-<button class="primary" onclick="calcular()">Calcular orçamento</button><div class="result" id="resultado">Preencha os dados e clique em calcular.</div><div class="mini" id="status">Rascunho automático ativado.</div>
+<div class="section">
+<h2>Peças</h2>
+<label>Peças que serão utilizadas</label>
+<textarea id="pecas" placeholder="Uma peça por linha"></textarea>
+<label>Valor das peças (R$)</label>
+<input id="valorPecas" type="number" min="0" step=".01" value="0">
+</div>
 
-<div class="section"><h2>Salvar e consultar</h2><div class="actions"><button class="primary" onclick="salvarOrcamento()">💾 Salvar orçamento</button><button class="dark" onclick="novoOrcamento()">🆕 Novo orçamento</button></div>
-<label>Consultar pelo Nº OS</label><input id="buscarOS" type="number" min="1" placeholder="Ex.: 12"><button class="dark" onclick="buscarOrcamento()">🔎 Abrir orçamento salvo</button><div id="historico" class="listbox"></div></div>
-<div class="section"><h2>Backup</h2><div class="actions"><button class="dark" onclick="exportarBackup()">⬇️ Exportar backup</button><button class="dark" onclick="$('arquivoBackup').click()">⬆️ Importar backup</button></div><input id="arquivoBackup" type="file" accept=".json,application/json" style="display:none" onchange="importarBackup(event)"></div>
-<div class="actions"><button class="pdf" onclick="gerarPDF()">📄 Gerar PDF</button><button class="secondary" onclick="compartilharPDF()">📲 Compartilhar PDF</button></div>
+<div class="section">
+<h2>Observações</h2>
+<textarea id="observacoes" placeholder="Condições e informações adicionais"></textarea>
+</div>
+
+<button class="primary" onclick="calcular()">Calcular orçamento</button>
+<div class="result" id="resultado">Preencha os dados e clique em calcular.</div>
+<div class="mini" id="status">Rascunho automático ativado.</div>
+
+<div class="section">
+<h2>Salvar e consultar</h2>
+<div class="actions">
+<button class="primary" onclick="salvarOrcamento()">💾 Salvar orçamento</button>
+<button class="dark" onclick="novoOrcamento()">🆕 Novo orçamento</button>
+</div>
+<label>Consultar pelo Nº OS</label>
+<input id="buscarOS" type="number" min="1" placeholder="Ex.: 12">
+<button class="dark" onclick="buscarOrcamento()">🔎 Abrir orçamento salvo</button>
+<div id="historico" class="listbox"></div>
+</div>
+
+<div class="section">
+<h2>Backup</h2>
+<div class="actions">
+<button class="dark" onclick="exportarBackup()">⬇️ Exportar backup</button>
+<button class="dark" onclick="$('arquivoBackup').click()">⬆️ Importar backup</button>
+</div>
+<input id="arquivoBackup" type="file" accept=".json,application/json" style="display:none" onchange="importarBackup(event)">
+</div>
+
+<div class="actions">
+<button class="pdf" onclick="gerarPDF()">📄 Gerar PDF</button>
+<button class="secondary" onclick="compartilharPDF()">📲 Compartilhar PDF</button>
+</div>
 <button class="secondary" onclick="enviarWhatsAppTexto()">💬 Enviar resumo pelo WhatsApp</button>
 <small>Os dados ficam salvos neste navegador/aparelho. Faça backup periodicamente.</small>
 </div>
 
 <script>
-const KOS='wevertoncar_proximo_os',KDB='wevertoncar_servicos',KREC='wevertoncar_orcamentos',KDRAFT='wevertoncar_rascunho';
-let editDBId=null,restaurando=false,timerDraft=null;
+const KOS='wevertoncar_proximo_os';
+const KDB='wevertoncar_servicos';
+const KCARS='wevertoncar_carros';
+const KREC='wevertoncar_orcamentos';
+const KDRAFT='wevertoncar_rascunho';
+
+let editDBId=null,editCarId=null,restaurando=false,timerDraft=null;
 const $=id=>document.getElementById(id);
-function dinheiro(v){return Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});}
-function hoje(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-function norm(s){return String(s||'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
-function ler(k,alt=[]){try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(alt));}catch(e){return alt;}}
-function getDB(){return ler(KDB,[])} function saveDB(a){localStorage.setItem(KDB,JSON.stringify(a))}
-function getRecords(){return ler(KREC,[])}
-function proximaOS(){let n=Number(localStorage.getItem(KOS)||1),r=getRecords();n=Math.max(n,...r.map(x=>(Number(x.os)||0)+1));localStorage.setItem(KOS,String(n+1));return n;}
-function valorCadastrado(carro,servico){let a=getDB(),s=norm(servico),c=norm(carro);if(!s)return null;let x=a.find(v=>norm(v.carro)===c&&norm(v.servico)===s)||a.find(v=>!norm(v.carro)&&norm(v.servico)===s);return x?{valor:Number(x.valor)||0,minutos:Number(x.minutos)||0}:null;}
-function setInitial(){ $('os').value=proximaOS();$('data').value=hoje();$('entrada').value='';$('saida').value='';$('kmEntrada').value='';$('kmSaida').value='';$('listaServicos').innerHTML='';adicionarServico(); }
-function adicionarServico(d=null){
- const el=document.createElement('div');el.className='servico-item';
- const dl='dl_'+Date.now()+'_'+Math.floor(Math.random()*100000);
- el.innerHTML=`<label>Serviço ${$('listaServicos').children.length+1}</label><input class="servico" list="${dl}" placeholder="Pesquise ou digite o serviço"><datalist id="${dl}"></datalist>
- <div class="grid"><div><label>Tempo (minutos)</label><input class="minutos" type="number" min="0" value="30"></div><div><label>Valor da hora técnica (R$)</label><input class="hora" type="number" min="0" step="0.01" value="120"></div></div>
- <div class="valor-servico">Mão de obra: ${dinheiro(60)}</div><button type="button" class="danger">🗑️ Remover serviço</button>`;
- $('listaServicos').appendChild(el);
- if(d){el.querySelector('.servico').value=d.servico||'';el.querySelector('.minutos').value=d.minutos??30;el.querySelector('.hora').value=d.hora??120;}
- el.querySelector('.servico').addEventListener('input',()=>{sugestoes(el);atualizarValores();agendarDraft();});
- el.querySelector('.servico').addEventListener('change',()=>{let c=valorCadastrado($('carro').value,el.querySelector('.servico').value);if(c){el.querySelector('.minutos').value=c.minutos;el.querySelector('.hora').value=c.minutos?c.valor*60/c.minutos:c.valor;}atualizarValores();agendarDraft();});
- el.querySelector('.minutos').addEventListener('input',()=>{atualizarValores();agendarDraft()});
- el.querySelector('.hora').addEventListener('input',()=>{atualizarValores();agendarDraft()});
- el.querySelector('button').onclick=()=>{el.remove();renumerar();atualizarValores();agendarDraft()};
- sugestoes(el);atualizarValores();
+
+function ler(k,alt=[]){
+ try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(alt))}
+ catch(e){return alt}
 }
-function renumerar(){document.querySelectorAll('.servico-item>label').forEach((x,i)=>x.textContent='Serviço '+(i+1));}
-function sugestoes(el){const dl=el.querySelector('datalist');if(!dl)return;dl.innerHTML='';const c=norm($('carro').value);getDB().filter(x=>!norm(x.carro)||norm(x.carro)===c||!c).forEach(x=>{const o=document.createElement('option');o.value=x.servico;o.label=(x.carro?x.carro+' — ':'')+dinheiro(x.valor)+' / '+x.minutos+' min';dl.appendChild(o);});}
-function lerServicos(){return [...document.querySelectorAll('.servico-item')].map(el=>({servico:el.querySelector('.servico').value.trim(),minutos:Number(el.querySelector('.minutos').value)||0,hora:Number(el.querySelector('.hora').value)||0})).filter(x=>x.servico);}
-function valorServico(d,s){const c=valorCadastrado(d.carro,s.servico);return c?c.valor:s.minutos/60*s.hora;}
-function atualizarValores(){document.querySelectorAll('.servico-item').forEach(el=>{sugestoes(el);const s={servico:el.querySelector('.servico').value,minutos:Number(el.querySelector('.minutos').value)||0,hora:Number(el.querySelector('.hora').value)||0};const c=valorCadastrado($('carro').value,s.servico);if(c){el.querySelector('.minutos').value=c.minutos;el.querySelector('.valor-servico').innerHTML='Mão de obra cadastrada: <b>'+dinheiro(c.valor)+'</b><br><span class="mini">'+c.minutos+' minutos</span>';}else el.querySelector('.valor-servico').textContent='Mão de obra: '+dinheiro(s.minutos/60*s.hora);});}
-function dados(){return {os:Number($('os').value),data:$('data').value,entrada:$('entrada').value,saida:$('saida').value,kmEntrada:$('kmEntrada').value,kmSaida:$('kmSaida').value,cliente:$('cliente').value.trim(),endereco:$('endereco').value.trim(),telefone:$('telefone').value.trim(),carro:$('carro').value.trim(),ano:$('ano').value,placa:$('placa').value.trim(),categoria:$('categoria').value,servicos:lerServicos(),pecas:$('pecas').value.trim(),valorPecas:Number($('valorPecas').value)||0,observacoes:$('observacoes').value.trim()};}
-function totalMao(d){return d.servicos.reduce((t,s)=>t+valorServico(d,s),0);}
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function calcular(silent=false){const d=dados();if(!d.servicos.length){if(!silent)alert('Digite pelo menos um serviço.');return null;}const mao=totalMao(d);$('resultado').innerHTML='<b>OS '+d.os+'</b><br>'+d.servicos.map((x,i)=>(i+1)+'. '+esc(x.servico)+' — <b>'+dinheiro(valorServico(d,x))+'</b>').join('<br>')+'<br><br>Mão de obra: <b>'+dinheiro(mao)+'</b><br>Peças: <b>'+dinheiro(d.valorPecas)+'</b><br><b>Total geral: '+dinheiro(mao+d.valorPecas)+'</b>';agendarDraft();return d;}
-function agendarDraft(){if(restaurando)return;clearTimeout(timerDraft);timerDraft=setTimeout(()=>{try{localStorage.setItem(KDRAFT,JSON.stringify(dados()));$('status').textContent='✓ Rascunho salvo automaticamente neste aparelho.';}catch(e){$('status').textContent='Não foi possível salvar automaticamente. Faça um backup.';}},250);}
-function preencher(d){restaurando=true;['os','data','entrada','saida','kmEntrada','kmSaida','cliente','endereco','telefone','carro','ano','placa','pecas','valorPecas','observacoes'].forEach(id=>$(id).value=d[id]??'');$('categoria').value=d.categoria||'Nacional';$('listaServicos').innerHTML='';(d.servicos||[]).forEach(s=>adicionarServico(s));if(!d.servicos?.length)adicionarServico();restaurando=false;atualizarValores();calcular(true);localStorage.setItem(KDRAFT,JSON.stringify(d));renderClientes();}
-function salvarOrcamento(){const d=calcular();if(!d)return;let r=getRecords().filter(x=>Number(x.os)!==d.os);r.push({...d,salvoEm:new Date().toISOString()});localStorage.setItem(KREC,JSON.stringify(r));localStorage.setItem(KDRAFT,JSON.stringify(d));$('resultado').innerHTML+='<br><span class="ok">✓ Orçamento salvo.</span>';renderHistorico();renderClientes();}
-function buscarOrcamento(){const d=getRecords().find(x=>Number(x.os)===Number($('buscarOS').value));if(!d){alert('OS não encontrada.');return;}preencher(d);}
-function renderHistorico(){const box=$('historico');box.innerHTML='';getRecords().sort((a,b)=>b.os-a.os).slice(0,30).forEach(x=>{const el=document.createElement('div');el.className='record';el.innerHTML='<b>OS '+x.os+'</b> — '+esc(x.cliente||'Sem cliente')+' — '+esc(x.carro||'Sem carro')+'<br><span class="mini">'+esc(x.data||'')+'</span>';const a=document.createElement('button');a.className='dark';a.textContent='Abrir';a.onclick=()=>preencher(x);const b=document.createElement('button');b.className='danger';b.textContent='Excluir';b.onclick=()=>{if(confirm('Excluir a OS '+x.os+'?')){localStorage.setItem(KREC,JSON.stringify(getRecords().filter(y=>Number(y.os)!==Number(x.os))));renderHistorico();}};el.append(a,b);box.appendChild(el);});if(!box.children.length)box.textContent='Nenhum orçamento salvo.';}
-function novoOrcamento(){if(!confirm('Começar um novo orçamento? Os já salvos serão mantidos.'))return;restaurando=true;['kmEntrada','kmSaida','cliente','endereco','telefone','carro','ano','placa','pecas','observacoes','valorPecas'].forEach(id=>$(id).value='');$('categoria').value='Nacional';$('valorPecas').value='0';restaurando=false;setInitial();$('resultado').textContent='Novo orçamento iniciado.';salvarRascunho();}
-function salvarRascunho(){try{localStorage.setItem(KDRAFT,JSON.stringify(dados()));}catch(e){}}
-function salvarServicoDB(){const carro=$('dbCarro').value.trim(),servico=$('dbServico').value.trim(),minutos=Number($('dbMinutos').value)||0,valor=Number($('dbValor').value)||0;if(!servico){alert('Informe o nome do serviço.');return;}let a=getDB();if(editDBId!==null){a=a.map(x=>x.id===editDBId?{...x,carro,servico,minutos,valor}:x);editDBId=null;}else a.push({id:Date.now(),carro,servico,minutos,valor});saveDB(a);limparDB();renderDB();atualizarValores();agendarDraft();}
-function limparDB(){editDBId=null;$('dbCarro').value='';$('dbServico').value='';$('dbMinutos').value=60;$('dbValor').value=120;$('tituloDB').textContent='Cadastrar serviço';}
-function editarDB(id){const x=getDB().find(v=>v.id===id);if(!x)return;editDBId=id;$('dbCarro').value=x.carro;$('dbServico').value=x.servico;$('dbMinutos').value=x.minutos;$('dbValor').value=x.valor;$('tituloDB').textContent='Editar serviço cadastrado';window.scrollTo({top:$('dbCarro').getBoundingClientRect().top+window.scrollY-20,behavior:'smooth'});}
-function excluirDB(id){if(!confirm('Excluir este serviço do banco?'))return;saveDB(getDB().filter(x=>x.id!==id));renderDB();atualizarValores();agendarDraft();}
-function renderDB(){const box=$('listaDB'),q=norm($('pesquisaDB').value);box.innerHTML='';getDB().filter(x=>!q||norm(x.carro+' '+x.servico).includes(q)).forEach(x=>{const el=document.createElement('div');el.className='record';const t=document.createElement('div');t.innerHTML='<b>'+esc(x.carro||'Todos os veículos')+'</b> — '+esc(x.servico)+'<br>'+x.minutos+' min — '+dinheiro(x.valor);const usar=document.createElement('button');usar.className='primary';usar.textContent='Selecionar';usar.onclick=()=>{adicionarServico({servico:x.servico,minutos:x.minutos,hora:x.minutos?x.valor*60/x.minutos:x.valor});const last=$('listaServicos').lastElementChild;if(last){last.querySelector('.servico').value=x.servico;last.querySelector('.minutos').value=x.minutos;last.querySelector('.hora').value=x.minutos?x.valor*60/x.minutos:x.valor;}atualizarValores();agendarDraft();$('listaServicos').scrollIntoView({behavior:'smooth'});};const edit=document.createElement('button');edit.className='dark';edit.textContent='Editar';edit.onclick=()=>editarDB(x.id);const del=document.createElement('button');del.className='danger';del.textContent='Excluir';del.onclick=()=>excluirDB(x.id);el.append(t,usar,edit,del);box.appendChild(el);});if(!box.children.length)box.textContent='Nenhum serviço encontrado.';$('carros').innerHTML=[...new Set(getDB().map(x=>x.carro).filter(Boolean))].map(x=>'<option value="'+esc(x)+'">').join('');}
-function renderClientes(){const nomes=[...new Set(getRecords().map(x=>x.cliente).filter(Boolean))];$('clientes').innerHTML=nomes.map(x=>'<option value="'+esc(x)+'">').join('');}
-function exportarBackup(){const b={versao:1,proximoOS:Number(localStorage.getItem(KOS)||1),servicos:getDB(),orcamentos:getRecords(),rascunho:ler(KDRAFT,null)};const blob=new Blob([JSON.stringify(b,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='backup_wevertoncar_'+hoje()+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
-function importarBackup(e){const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const b=JSON.parse(rd.result);if(!Array.isArray(b.servicos)||!Array.isArray(b.orcamentos))throw Error();if(!confirm('Importar backup e substituir os dados atuais?'))return;saveDB(b.servicos);localStorage.setItem(KREC,JSON.stringify(b.orcamentos));localStorage.setItem(KOS,String(Number(b.proximoOS)||1));if(b.rascunho)localStorage.setItem(KDRAFT,JSON.stringify(b.rascunho));renderDB();renderHistorico();renderClientes();alert('Backup importado.');}catch(err){alert('Arquivo de backup inválido.');}e.target.value='';};rd.readAsText(f);}
-function fmtDT(v){if(!v)return '-';const p=v.split('T');return p[0].split('-').reverse().join('/')+(p[1]?' '+p[1]:'');}
-function criarPDF(){const d=dados();if(!d.servicos.length){alert('Digite pelo menos um serviço.');return null;}if(!window.jspdf){alert('A biblioteca do PDF não carregou. Verifique a conexão com a internet.');return null;}
-const {jsPDF}=window.jspdf,pdf=new jsPDF({unit:'mm',format:'a4'}),L=14,R=196,W=R-L;let y=14;
-const base=d.data?new Date(d.data+'T12:00:00'):new Date(),valid=new Date(base);valid.setDate(valid.getDate()+7);
-const fd=v=>String(v.getDate()).padStart(2,'0')+'/'+String(v.getMonth()+1).padStart(2,'0')+'/'+v.getFullYear();
-function sec(t){if(y>265){pdf.addPage();y=15;}pdf.setFillColor(235,235,235);pdf.rect(L,y,W,7,'F');pdf.setFont('helvetica','bold');pdf.setFontSize(9);pdf.setTextColor(25,25,25);pdf.text(t,L+2,y+4.8);y+=10;}
-function lv(a,b,x,yy,w){pdf.setFont('helvetica','bold');pdf.setFontSize(8);pdf.setTextColor(55,55,55);pdf.text(a,x,yy);pdf.setFont('helvetica','normal');pdf.setTextColor(20,20,20);pdf.text(pdf.splitTextToSize(String(b||'-'),w),x,yy+4);}
-function wrap(t,x,yy,w,size=8){pdf.setFont('helvetica','normal');pdf.setFontSize(size);const lines=pdf.splitTextToSize(String(t||'-'),w);if(yy+lines.length*4>276){pdf.addPage();y=15;yy=y;}pdf.text(lines,x,yy);return lines.length*4;}
-pdf.setDrawColor(190,0,0);pdf.setLineWidth(1);pdf.line(L,y,R,y);y+=5;pdf.circle(24,y+8,8,'S');pdf.setFont('helvetica','bold');pdf.setFontSize(12);pdf.setTextColor(190,0,0);pdf.text('W',24,y+12,{align:'center'});
-pdf.setFontSize(18);pdf.setTextColor(25,25,25);pdf.text('WEVERTONCAR',38,y+6);pdf.setFontSize(8);pdf.setFont('helvetica','normal');pdf.setTextColor(70,70,70);pdf.text('ORÇAMENTO DE MÃO DE OBRA / ORDEM DE SERVIÇO',38,y+11);pdf.text('Rua São Regis, 310 - Bairro Nova York',38,y+16);
-pdf.setFont('helvetica','bold');pdf.setFontSize(9);pdf.setTextColor(25,25,25);pdf.text('OS Nº '+d.os,R,y+5,{align:'right'});pdf.setFont('helvetica','normal');pdf.setFontSize(8);pdf.text('Data: '+fd(base),R,y+10,{align:'right'});pdf.text('Validade: '+fd(valid),R,y+15,{align:'right'});
-y+=24;pdf.setDrawColor(190,0,0);pdf.line(L,y,R,y);y+=5;
-sec('DADOS DO CLIENTE');lv('Nome:',d.cliente,L,y,88);lv('Telefone:',d.telefone,112,y,80);y+=10;lv('Endereço:',d.endereco,L,y,170);y+=10;
-sec('DADOS DO VEÍCULO');lv('Marca / Modelo:',d.carro,L,y,80);lv('Ano:',d.ano,105,y,25);lv('Placa:',d.placa,140,y,45);y+=10;lv('KM entrada:',d.kmEntrada?d.kmEntrada+' km':'-',L,y,70);lv('KM saída:',d.kmSaida?d.kmSaida+' km':'-',85,y,60);lv('Categoria:',d.categoria,150,y,42);y+=10;
-sec('SERVIÇOS / MÃO DE OBRA');pdf.setFillColor(248,248,248);pdf.rect(L,y,W,8,'F');pdf.setFont('helvetica','bold');pdf.setFontSize(8);pdf.setTextColor(25,25,25);pdf.text('QTD',L+3,y+5);pdf.text('DESCRIÇÃO DO SERVIÇO',L+18,y+5);pdf.text('VALOR',R-2,y+5,{align:'right'});y+=8;
-d.servicos.forEach((s,i)=>{const lines=pdf.splitTextToSize(s.servico||'Serviço',W-65),h=Math.max(8,lines.length*4+3);if(y+h>270){pdf.addPage();y=15;}if(i%2){pdf.setFillColor(250,250,250);pdf.rect(L,y,W,h,'F');}pdf.setFont('helvetica','normal');pdf.setFontSize(8);pdf.setTextColor(25,25,25);pdf.text('1',L+4,y+5);pdf.text(lines,L+18,y+5);pdf.text(dinheiro(valorServico(d,s)),R-2,y+5,{align:'right'});pdf.setDrawColor(215,215,215);pdf.line(L,y+h,R,y+h);y+=h;});
-y+=5;pdf.setFont('helvetica','bold');pdf.setFontSize(8);pdf.setTextColor(35,35,35);pdf.text('PEÇAS / MATERIAIS:',L,y);y+=4;y+=wrap(d.pecas||'Não informado',L,y,W-4,8);y+=2;pdf.setFont('helvetica','normal');pdf.text('Valor das peças: '+dinheiro(d.valorPecas),L,y+2);y+=9;
-if(d.entrada||d.saida){pdf.setFontSize(8);pdf.text('Entrada: '+fmtDT(d.entrada)+'     Saída: '+fmtDT(d.saida),L,y);y+=6;}
-pdf.setDrawColor(190,0,0);pdf.line(L,y,R,y);y+=8;const mao=totalMao(d);
-pdf.setFont('helvetica','normal');pdf.setFontSize(9);pdf.setTextColor(30,30,30);pdf.text('Mão de obra:',R-65,y);pdf.text(dinheiro(mao),R-2,y,{align:'right'});y+=7;pdf.text('Peças:',R-65,y);pdf.text(dinheiro(d.valorPecas),R-2,y,{align:'right'});y+=8;
-pdf.setFillColor(245,245,245);pdf.rect(R-80,y-5,80,13,'F');pdf.setFont('helvetica','bold');pdf.setFontSize(12);pdf.setTextColor(190,0,0);pdf.text('TOTAL:',R-76,y+3);pdf.text(dinheiro(mao+d.valorPecas),R-3,y+3,{align:'right'});y+=17;
-if(d.observacoes){if(y>250){pdf.addPage();y=18;}pdf.setFont('helvetica','bold');pdf.setFontSize(8);pdf.setTextColor(35,35,35);pdf.text('OBSERVAÇÕES:',L,y);y+=4;y+=wrap(d.observacoes,L,y,W,8)+4;}
-if(y>255){pdf.addPage();y=25;}pdf.setDrawColor(90,90,90);pdf.line(L+5,y+12,L+75,y+12);pdf.line(R-75,y+12,R-5,y+12);pdf.setFont('helvetica','normal');pdf.setFontSize(8);pdf.setTextColor(50,50,50);pdf.text('Assinatura do cliente',L+40,y+17,{align:'center'});pdf.text('Responsável / oficina',R-40,y+17,{align:'center'});
-pdf.setFontSize(7);pdf.setTextColor(100,100,100);pdf.text('Orçamento sujeito à avaliação e confirmação dos serviços.',105,287,{align:'center'});pdf.text('WevertonCar • OS '+d.os,105,291,{align:'center'});
-const nome=(d.cliente||'Cliente').replace(/[^a-zA-Z0-9À-ÿ ]/g,'').replace(/\s+/g,'_');return {blob:pdf.output('blob'),nome:'OS_'+d.os+'_'+nome+'.pdf'};}
-function gerarPDF(){const r=criarPDF();if(!r)return;const a=document.createElement('a');a.href=URL.createObjectURL(r.blob);a.download=r.nome;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
-async function compartilharPDF(){const r=criarPDF();if(!r)return;const f=new File([r.blob],r.nome,{type:'application/pdf'});if(navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({title:'WevertonCar OS '+dados().os,text:'Orçamento de serviço',files:[f]});}catch(e){if(e.name!=='AbortError')alert('Não foi possível compartilhar.');}}else{gerarPDF();alert('PDF salvo. Abra o arquivo e use Compartilhar.');}}
-function enviarWhatsAppTexto(){const d=dados();if(!d.servicos.length){alert('Digite pelo menos um serviço.');return;}const mao=totalMao(d),txt='*WevertonCar - Orçamento de Serviço*\\nRua São Regis, 310 - Bairro Nova York\\n\\n*OS: '+d.os+'*\\nData: '+(d.data||'-')+'\\nEntrada: '+(d.entrada||'-')+'\\nSaída: '+(d.saida||'-')+'\\nKM entrada: '+(d.kmEntrada||'-')+' | KM saída: '+(d.kmSaida||'-')+'\\n\\nCliente: '+(d.cliente||'Não informado')+'\\nEndereço: '+(d.endereco||'-')+'\\nTelefone: '+(d.telefone||'-')+'\\nCarro: '+(d.carro||'Não informado')+' '+(d.ano||'')+'\\nPlaca: '+(d.placa||'-')+'\\nCategoria: '+d.categoria+'\\n\\n*Serviços:*\\n'+d.servicos.map((s,i)=>(i+1)+'. '+s.servico+' - '+dinheiro(valorServico(d,s))).join('\\n')+'\\n\\nPeças: '+(d.pecas||'Não informadas')+'\\nMão de obra: '+dinheiro(mao)+'\\nValor das peças: '+dinheiro(d.valorPecas)+'\\n*TOTAL: '+dinheiro(mao+d.valorPecas)+'*'+(d.observacoes?'\\n\\nObservações: '+d.observacoes:'');window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');}
-document.addEventListener('input',e=>{if(e.target.matches('input:not(#pesquisaDB),textarea,select')){if(e.target.id==='carro')atualizarValores();agendarDraft();}});
-if(!getDB().length)saveDB([{id:1,carro:'Uno',servico:'Troca de pastilha',minutos:60,valor:120},{id:2,carro:'Golf Sapão',servico:'Troca de pastilha',minutos:60,valor:150}]);
+function getDB(){return ler(KDB,[])}
+function saveDB(a){localStorage.setItem(KDB,JSON.stringify(a))}
+function getCars(){return ler(KCARS,[])}
+function saveCars(a){localStorage.setItem(KCARS,JSON.stringify(a))}
+function getRecords(){return ler(KREC,[])}
+function dinheiro(v){
+ return Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+}
+function hoje(){
+ const d=new Date();
+ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function norm(s){
+ return String(s||'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+function esc(s){
+ return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* Calcula o próximo número sem incrementá-lo ao atualizar a página. */
+function proximoNumeroOS(){
+ const salvo=Number(localStorage.getItem(KOS)||1);
+ const maior=getRecords().reduce((m,r)=>Math.max(m,Number(r.os)||0),0);
+ return Math.max(1,salvo,maior+1);
+}
+function reservarNovaOS(){
+ const n=proximoNumeroOS();
+ localStorage.setItem(KOS,String(n+1));
+ return n;
+}
+function garantirContadorOS(os){
+ const atual=Number(localStorage.getItem(KOS)||1);
+ localStorage.setItem(KOS,String(Math.max(atual,Number(os)+1)));
+}
+
+function setInitial(numero){
+ $('os').value=numero||proximoNumeroOS();
+ $('data').value=hoje();
+ $('entrada').value='';
+ $('saida').value='';
+ $('kmEntrada').value='';
+ $('kmSaida').value='';
+ $('cliente').value='';
+ $('endereco').value='';
+ $('telefone').value='';
+ $('carro').value='';
+ $('ano').value='';
+ $('placa').value='';
+ $('motor').value='';
+ $('categoria').value='Nacional';
+ $('pecas').value='';
+ $('valorPecas').value='0';
+ $('observacoes').value='';
+ $('listaServicos').innerHTML='';
+ adicionarServico();
+ salvarRascunho();
+}
+
+function valorCadastrado(carro,servico){
+ const a=getDB(),s=norm(servico),c=norm(carro);
+ if(!s)return null;
+ const x=a.find(v=>norm(v.carro)===c&&norm(v.servico)===s)
+ ||a.find(v=>!norm(v.carro)&&norm(v.servico)===s);
+ return x?{valor:Number(x.valor)||0,minutos:Number(x.minutos)||0}:null;
+}
+
+function adicionarServico(d=null){
+ const el=document.createElement('div');
+ el.className='servico-item';
+ const dl='dl_'+Date.now()+'_'+Math.floor(Math.random()*100000);
+ el.innerHTML=`
+ <label>Serviço ${$('listaServicos').children.length+1}</label>
+ <input class="servico" list="${dl}" placeholder="Pesquise ou digite o serviço">
+ <datalist id="${dl}"></datalist>
+ <div class="grid">
+ <div><label>Tempo (minutos)</label><input class="minutos" type="number" min="0" value="30"></div>
+ <div><label>Valor da hora técnica (R$)</label><input class="hora" type="number" min="0" step=".01" value="120"></div>
+ </div>
+ <div class="valor-servico">Mão de obra: ${dinheiro(60)}</div>
+ <button type="button" class="danger">🗑️ Remover serviço</button>`;
+ $('listaServicos').appendChild(el);
+
+ if(d){
+  el.querySelector('.servico').value=d.servico||'';
+  el.querySelector('.minutos').value=d.minutos??30;
+  el.querySelector('.hora').value=d.hora??120;
+  if(d.hora===undefined){
+   const c=valorCadastrado($('carro').value,d.servico);
+   if(c)el.querySelector('.hora').value=c.minutos?c.valor*60/c.minutos:c.valor;
+  }
+ }
+
+ el.querySelector('.servico').addEventListener('change',()=>{
+  const c=valorCadastrado($('carro').value,el.querySelector('.servico').value);
+  if(c){
+   el.querySelector('.minutos').value=c.minutos;
+   el.querySelector('.hora').value=c.minutos?c.valor*60/c.minutos:c.valor;
+  }
+  atualizarValores();agendarDraft();
+ });
+ el.querySelector('.servico').addEventListener('input',()=>{
+  sugestoes(el);atualizarValores();agendarDraft();
+ });
+ el.querySelector('.minutos').addEventListener('input',()=>{
+  atualizarValores();agendarDraft();
+ });
+ el.querySelector('.hora').addEventListener('input',()=>{
+  atualizarValores();agendarDraft();
+ });
+ el.querySelector('button').onclick=()=>{
+  el.remove();renumerar();atualizarValores();agendarDraft();
+ };
+ sugestoes(el);
+ atualizarValores();
+}
+
+function renumerar(){
+ document.querySelectorAll('.servico-item>label').forEach((x,i)=>x.textContent='Serviço '+(i+1));
+}
+function sugestoes(el){
+ const dl=el.querySelector('datalist');
+ if(!dl)return;
+ dl.innerHTML='';
+ const c=norm($('carro').value);
+ getDB().filter(x=>!norm(x.carro)||norm(x.carro)===c||!c).forEach(x=>{
+  const o=document.createElement('option');
+  o.value=x.servico;
+  o.label=(x.carro?x.carro+' — ':'')+dinheiro(x.valor)+' / '+x.minutos+' min';
+  dl.appendChild(o);
+ });
+}
+function lerServicos(){
+ return [...document.querySelectorAll('.servico-item')].map(el=>({
+  servico:el.querySelector('.servico').value.trim(),
+  minutos:Number(el.querySelector('.minutos').value)||0,
+  hora:Number(el.querySelector('.hora').value)||0
+ })).filter(x=>x.servico);
+}
+function valorServico(d,s){
+ return (Number(s.minutos)||0)/60*(Number(s.hora)||0);
+}
+function atualizarValores(){
+ document.querySelectorAll('.servico-item').forEach(el=>{
+  sugestoes(el);
+  const minutos=Number(el.querySelector('.minutos').value)||0;
+  const hora=Number(el.querySelector('.hora').value)||0;
+  el.querySelector('.valor-servico').textContent='Mão de obra: '+dinheiro(minutos/60*hora);
+ });
+}
+function dados(){
+ return {
+  os:Number($('os').value),data:$('data').value,
+  entrada:$('entrada').value,saida:$('saida').value,
+  kmEntrada:$('kmEntrada').value,kmSaida:$('kmSaida').value,
+  cliente:$('cliente').value.trim(),endereco:$('endereco').value.trim(),
+  telefone:$('telefone').value.trim(),carro:$('carro').value.trim(),
+  ano:$('ano').value,placa:$('placa').value.trim(),
+  motor:$('motor').value.trim(),categoria:$('categoria').value,
+  servicos:lerServicos(),pecas:$('pecas').value.trim(),
+  valorPecas:Number($('valorPecas').value)||0,
+  observacoes:$('observacoes').value.trim()
+ };
+}
+function totalMao(d){
+ return d.servicos.reduce((t,s)=>t+valorServico(d,s),0);
+}
+function calcular(silent=false){
+ const d=dados();
+ if(!d.servicos.length){
+  if(!silent)alert('Digite pelo menos um serviço.');
+  return null;
+ }
+ const mao=totalMao(d);
+ $('resultado').innerHTML='<b>OS '+d.os+'</b><br>'+
+ d.servicos.map((x,i)=>(i+1)+'. '+esc(x.servico)+' — <b>'+dinheiro(valorServico(d,x))+'</b>').join('<br>')+
+ '<br><br>Mão de obra: <b>'+dinheiro(mao)+'</b>'+
+ '<br>Peças: <b>'+dinheiro(d.valorPecas)+'</b>'+
+ '<br><b>Total geral: '+dinheiro(mao+d.valorPecas)+'</b>';
+ agendarDraft();
+ return d;
+}
+function agendarDraft(){
+ if(restaurando)return;
+ clearTimeout(timerDraft);
+ timerDraft=setTimeout(salvarRascunho,250);
+}
+function salvarRascunho(){
+ try{
+  localStorage.setItem(KDRAFT,JSON.stringify(dados()));
+  $('status').textContent='✓ Rascunho salvo automaticamente neste aparelho.';
+ }catch(e){
+  $('status').textContent='Não foi possível salvar. Faça um backup.';
+ }
+}
+function preencher(d){
+ restaurando=true;
+ ['os','data','entrada','saida','kmEntrada','kmSaida','cliente','endereco',
+ 'telefone','carro','ano','placa','motor','pecas','valorPecas','observacoes']
+ .forEach(id=>$(id).value=d[id]??'');
+ $('categoria').value=d.categoria||'Nacional';
+ $('listaServicos').innerHTML='';
+ (d.servicos||[]).forEach(s=>adicionarServico(s));
+ if(!d.servicos?.length)adicionarServico();
+ restaurando=false;
+ atualizarValores();
+ localStorage.setItem(KDRAFT,JSON.stringify(d));
+ calcular(true);
+ renderClientes();
+}
+function salvarOrcamento(){
+ const d=calcular();
+ if(!d)return;
+ const r=getRecords().filter(x=>Number(x.os)!==d.os);
+ r.push({...d,salvoEm:new Date().toISOString()});
+ localStorage.setItem(KREC,JSON.stringify(r));
+ garantirContadorOS(d.os);
+ localStorage.setItem(KDRAFT,JSON.stringify(d));
+ $('resultado').innerHTML+='<br><span class="ok">✓ Orçamento salvo.</span>';
+ renderHistorico();renderClientes();
+}
+function buscarOrcamento(){
+ const d=getRecords().find(x=>Number(x.os)===Number($('buscarOS').value));
+ if(!d){alert('OS não encontrada.');return;}
+ preencher(d);
+}
+function novoOrcamento(){
+ if(!confirm('Começar um novo orçamento? Os já salvos serão mantidos.'))return;
+ const n=reservarNovaOS();
+ setInitial(n);
+ $('resultado').textContent='Novo orçamento iniciado.';
+}
+
+function renderHistorico(){
+ const box=$('historico');box.innerHTML='';
+ getRecords().sort((a,b)=>b.os-a.os).slice(0,30).forEach(x=>{
+  const el=document.createElement('div');el.className='record';
+  el.innerHTML='<b>OS '+x.os+'</b> — '+esc(x.cliente||'Sem cliente')+
+  ' — '+esc(x.carro||'Sem carro')+'<br><span class="mini">'+esc(x.data||'')+'</span>';
+  const a=document.createElement('button');a.className='dark';a.textContent='Abrir';
+  a.onclick=()=>preencher(x);
+  const b=document.createElement('button');b.className='danger';b.textContent='Excluir';
+  b.onclick=()=>{
+   if(confirm('Excluir a OS '+x.os+'?')){
+    localStorage.setItem(KREC,JSON.stringify(getRecords().filter(y=>Number(y.os)!==Number(x.os))));
+    renderHistorico();
+   }
+  };
+  el.append(a,b);box.appendChild(el);
+ });
+ if(!box.children.length)box.textContent='Nenhum orçamento salvo.';
+}
+
+/* Banco de mão de obra */
+function salvarServicoDB(){
+ const carro=$('dbCarro').value.trim();
+ const servico=$('dbServico').value.trim();
+ const minutos=Number($('dbMinutos').value)||0;
+ const valor=Number($('dbValor').value)||0;
+ if(!servico){alert('Informe o nome do serviço.');return;}
+ let a=getDB();
+ if(editDBId!==null){
+  a=a.map(x=>x.id===editDBId?{...x,carro,servico,minutos,valor}:x);
+ }else{
+  a.push({id:Date.now(),carro,servico,minutos,valor});
+ }
+ saveDB(a);limparDB();renderDB();atualizarValores();agendarDraft();
+}
+function limparDB(){
+ editDBId=null;
+ $('dbCarro').value='';$('dbServico').value='';
+ $('dbMinutos').value=60;$('dbValor').value=120;
+ $('tituloDB').textContent='Cadastrar serviço';
+}
+function editarDB(id){
+ const x=getDB().find(v=>v.id===id);if(!x)return;
+ editDBId=id;
+ $('dbCarro').value=x.carro;$('dbServico').value=x.servico;
+ $('dbMinutos').value=x.minutos;$('dbValor').value=x.valor;
+ $('tituloDB').textContent='Editar serviço cadastrado';
+ $('dbCarro').scrollIntoView({behavior:'smooth',block:'center'});
+}
+function excluirDB(id){
+ if(!confirm('Excluir este serviço do banco?'))return;
+ saveDB(getDB().filter(x=>x.id!==id));
+ renderDB();atualizarValores();
+}
+function renderDB(){
+ const box=$('listaDB'),q=norm($('pesquisaDB').value);
+ box.innerHTML='';
+ getDB().filter(x=>!q||norm(x.carro+' '+x.servico).includes(q)).forEach(x=>{
+  const el=document.createElement('div');el.className='record';
+  const t=document.createElement('div');
+  t.innerHTML='<b>'+esc(x.carro||'Todos os veículos')+'</b> — '+esc(x.servico)+
+  '<br>'+x.minutos+' min — '+dinheiro(x.valor);
+  const usar=document.createElement('button');usar.className='primary';usar.textContent='Selecionar';
+  usar.onclick=()=>{
+   const vazio=[...document.querySelectorAll('.servico-item')].find(v=>!v.querySelector('.servico').value.trim());
+   const s={servico:x.servico,minutos:x.minutos,hora:x.minutos?x.valor*60/x.minutos:x.valor};
+   if(vazio){
+    vazio.querySelector('.servico').value=s.servico;
+    vazio.querySelector('.minutos').value=s.minutos;
+    vazio.querySelector('.hora').value=s.hora;
+   }else adicionarServico(s);
+   atualizarValores();agendarDraft();
+   $('listaServicos').scrollIntoView({behavior:'smooth'});
+  };
+  const edit=document.createElement('button');edit.className='dark';edit.textContent='Editar';edit.onclick=()=>editarDB(x.id);
+  const del=document.createElement('button');del.className='danger';del.textContent='Excluir';del.onclick=()=>excluirDB(x.id);
+  el.append(t,usar,edit,del);box.appendChild(el);
+ });
+ if(!box.children.length)box.textContent='Nenhum serviço encontrado.';
+}
+
+/* Banco de carros independente */
+function salvarCarro(){
+ const marca=$('carMarca').value.trim();
+ const modelo=$('carModelo').value.trim();
+ if(!marca||!modelo){alert('Informe a marca e o modelo.');return;}
+ const carro={
+  id:editCarId??Date.now(),marca,modelo,
+  ano:$('carAno').value,motor:$('carMotor').value.trim(),
+  categoria:$('carCategoria').value
+ };
+ let a=getCars();
+ if(editCarId!==null)a=a.map(x=>x.id===editCarId?carro:x);
+ else a.push(carro);
+ saveCars(a);limparCarro();renderCarros();
+}
+function limparCarro(){
+ editCarId=null;
+ $('carMarca').value='';$('carModelo').value='';
+ $('carAno').value='';$('carMotor').value='';
+ $('carCategoria').value='Nacional';
+}
+function editarCarro(id){
+ const c=getCars().find(x=>x.id===id);if(!c)return;
+ editCarId=id;
+ $('carMarca').value=c.marca;$('carModelo').value=c.modelo;
+ $('carAno').value=c.ano||'';$('carMotor').value=c.motor||'';
+ $('carCategoria').value=c.categoria||'Nacional';
+ $('carMarca').scrollIntoView({behavior:'smooth',block:'center'});
+}
+function excluirCarro(id){
+ if(!confirm('Excluir este carro cadastrado?'))return;
+ saveCars(getCars().filter(x=>x.id!==id));renderCarros();
+}
+function usarCarro(id){
+ const c=getCars().find(x=>x.id===id);if(!c)return;
+ $('carro').value=[c.marca,c.modelo].filter(Boolean).join(' ');
+ $('ano').value=c.ano||'';
+ $('motor').value=c.motor||'';
+ $('categoria').value=c.categoria||'Nacional';
+ atualizarValores();agendarDraft();
+}
+function renderCarros(){
+ const box=$('listaCarros'),q=norm($('pesquisaCarro').value);
+ box.innerHTML='';
+ getCars().filter(c=>!q||norm([c.marca,c.modelo,c.ano,c.motor,c.categoria].join(' ')).includes(q)).forEach(c=>{
+  const el=document.createElement('div');el.className='record';
+  const t=document.createElement('div');
+  t.innerHTML='<b>'+esc(c.marca)+' '+esc(c.modelo)+'</b>'+
+  '<br>Ano: '+esc(c.ano||'-')+' | Motor: '+esc(c.motor||'-')+
+  ' | '+esc(c.categoria||'Nacional');
+  const usar=document.createElement('button');usar.className='primary';usar.textContent='Usar';
+  usar.onclick=()=>usarCarro(c.id);
+  const edit=document.createElement('button');edit.className='dark';edit.textContent='Editar';
+  edit.onclick=()=>editarCarro(c.id);
+  const del=document.createElement('button');del.className='danger';del.textContent='Excluir';
+  del.onclick=()=>excluirCarro(c.id);
+  el.append(t,usar,edit,del);box.appendChild(el);
+ });
+ if(!box.children.length)box.textContent='Nenhum carro cadastrado.';
+ $('carros').innerHTML=getCars().map(c=>'<option value="'+esc(c.marca+' '+c.modelo)+'">').join('');
+}
+function renderClientes(){
+ const nomes=[...new Set(getRecords().map(x=>x.cliente).filter(Boolean))];
+ $('clientes').innerHTML=nomes.map(x=>'<option value="'+esc(x)+'">').join('');
+}
+
+/* Backup dos dois bancos, orçamentos e rascunho */
+function exportarBackup(){
+ const b={
+  versao:2,proximoOS:Number(localStorage.getItem(KOS)||1),
+  servicos:getDB(),carros:getCars(),orcamentos:getRecords(),
+  rascunho:ler(KDRAFT,null)
+ };
+ const blob=new Blob([JSON.stringify(b,null,2)],{type:'application/json'});
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);
+ a.download='backup_wevertoncar_'+hoje()+'.json';
+ a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function importarBackup(e){
+ const f=e.target.files[0];if(!f)return;
+ const rd=new FileReader();
+ rd.onload=()=>{
+  try{
+   const b=JSON.parse(rd.result);
+   if(!Array.isArray(b.servicos)||!Array.isArray(b.orcamentos))throw Error();
+   if(!confirm('Importar backup e substituir os dados atuais?'))return;
+   saveDB(b.servicos);
+   saveCars(Array.isArray(b.carros)?b.carros:[]);
+   localStorage.setItem(KREC,JSON.stringify(b.orcamentos));
+   localStorage.setItem(KOS,String(Number(b.proximoOS)||1));
+   if(b.rascunho)localStorage.setItem(KDRAFT,JSON.stringify(b.rascunho));
+   renderDB();renderCarros();renderHistorico();renderClientes();
+   alert('Backup importado.');
+  }catch(err){alert('Arquivo de backup inválido.');}
+  e.target.value='';
+ };
+ rd.readAsText(f);
+}
+
+function fmtDT(v){
+ if(!v)return '-';
+ const p=v.split('T');
+ return p[0].split('-').reverse().join('/')+(p[1]?' '+p[1]:'');
+}
+
+/* PDF A4: mantém o modelo anterior de orçamento */
+function criarPDF(){
+ const d=dados();
+ if(!d.servicos.length){alert('Digite pelo menos um serviço.');return null;}
+ if(!window.jspdf){alert('A biblioteca do PDF não carregou. Verifique a internet.');return null;}
+ const {jsPDF}=window.jspdf;
+ const pdf=new jsPDF({unit:'mm',format:'a4'});
+ const L=14,R=196,W=R-L;
+ let y=14;
+ const base=d.data?new Date(d.data+'T12:00:00'):new Date();
+ const valid=new Date(base);valid.setDate(valid.getDate()+7);
+ const fd=v=>String(v.getDate()).padStart(2,'0')+'/'+String(v.getMonth()+1).padStart(2,'0')+'/'+v.getFullYear();
+
+ function sec(t){
+  if(y>265){pdf.addPage();y=15;}
+  pdf.setFillColor(235,235,235);pdf.rect(L,y,W,7,'F');
+  pdf.setFont('helvetica','bold');pdf.setFontSize(9);pdf.setTextColor(25,25,25);
+  pdf.text(t,L+2,y+4.8);y+=10;
+ }
+ function lv(a,b,x,yy,w){
+  pdf.setFont('helvetica','bold');pdf.setFontSize(8);pdf.setTextColor(55,55,55);
+  pdf.text(a,x,yy);
+  pdf.setFont('helvetica','normal');pdf.setTextColor(20,20,20);
+  pdf.text(pdf.splitTextToSize(String(b||'-'),w),x,yy+4);
+ }
+ function wrap(t,x,yy,w,size=8){
+  pdf.setFont('helvetica','normal');pdf.setFontSize(size);
+  const lines=pdf.splitTextToSize(String(t||'-'),w);
+  if(yy+lines.length*4>276){pdf.addPage();y=15;yy=y;}
+  pdf.text(lines,x,yy);return lines.length*4;
+ }
+
+ pdf.setDrawColor(190,0,0);pdf.setLineWidth(1);pdf.line(L,y,R,y);
+ y+=5;pdf.circle(24,y+8,8,'S');
+ pdf.setFont('helvetica','bold');pdf.setFontSize(12);pdf.setTextColor(190,0,0);
+ pdf.text('W',24,y+12,{align:'center'});
+ pdf.setFontSize(18);pdf.setTextColor(25,25,25);pdf.text('WEVERTONCAR',38,y+6);
+ pdf.setFontSize(8);pdf.setFont('helvetica','normal');pdf.setTextColor(70,70,70);
+ pdf.text('ORÇAMENTO DE MÃO DE OBRA / ORDEM DE SERVIÇO',38,y+11);
+ pdf.text('Rua São Regis, 310 - Bairro Nova York',38,y+16);
+ pdf.setFont('helvetica','bold');pdf.setFontSize(9);pdf.setTextColor(25,25,25);
+ pdf.text('OS Nº '+d.os,R,y+5,{align:'right'});
+ pdf.setFont('helvetica','normal');pdf.setFontSize(8);
+ pdf.text('Data: '+fd(base),R,y+10,{align:'right'});
+ pdf.text('Validade: '+fd(valid),R,y+15,{align:'right'});
+ y+=24;pdf.setDrawColor(190,0,0);pdf.line(L,y,R,y);y+=5;
+
+ sec('DADOS DO CLIENTE');
+ lv('Nome:',d.cliente,L,y,88);lv('Telefone:',d.telefone,112,y,80);y+=10;
+ lv('Endereço:',d.endereco,L,y,170);y+=10;
+
+ sec('DADOS DO VEÍCULO');
+ lv('Marca / Modelo:',d.carro,L,y,80);
+ lv('Ano:',d.ano,105,y,25);
+ lv('Placa:',d.placa,140,y,45);y+=10;
+ lv('KM entrada:',d.kmEntrada?d.kmEntrada+' km':'-',L,y,70);
+ lv('KM saída:',d.kmSaida?d.kmSaida+' km':'-',85,y,60);
+ lv('Categoria:',d.categoria,150,y,42);y+=10;
+
+ sec('SERVIÇOS / MÃO DE OBRA');
+ pdf.setFillColor(248,248,248);pdf.rect(L,y,W,8,'F');
+ pdf.setFont('helvetica','bold');pdf.setFontSize(8);pdf.setTextColor(25,25,25);
+ pdf.text('QTD',L+3,y+5);
+ pdf.text('DESCRIÇÃO DO SERVIÇO',L+18,y+5);
+ pdf.text('VALOR',R-2,y+5,{align:'right'});y+=8;
+
+ d.servicos.forEach((s,i)=>{
+  const lines=pdf.splitTextToSize(s.servico||'Serviço',W-65);
+  const h=Math.max(8,lines.length*4+3);
+  if(y+h>270){pdf.addPage();y=15;}
+  if(i%2){pdf.setFillColor(250,250,250);pdf.rect(L,y,W,h,'F');}
+  pdf.setFont('helvetica','normal');pdf.setFontSize(8);pdf.setTextColor(25,25,25);
+  pdf.text('1',L+4,y+5);
+  pdf.text(lines,L+18,y+5);
+  pdf.text(dinheiro(valorServico(d,s)),R-2,y+5,{align:'right'});
+  pdf.setDrawColor(215,215,215);pdf.line(L,y+h,R,y+h);y+=h;
+ });
+
+ y+=5;pdf.setFont('helvetica','bold');pdf.setFontSize(8);pdf.setTextColor(35,35,35);
+ pdf.text('PEÇAS / MATERIAIS:',L,y);y+=4;
+ y+=wrap(d.pecas||'Não informado',L,y,W-4,8)+2;
+ pdf.setFont('helvetica','normal');
+ pdf.text('Valor das peças: '+dinheiro(d.valorPecas),L,y+2);y+=9;
+
+ if(d.entrada||d.saida){
+  pdf.setFontSize(8);
+  pdf.text('Entrada: '+fmtDT(d.entrada)+'     Saída: '+fmtDT(d.saida),L,y);y+=6;
+ }
+
+ pdf.setDrawColor(190,0,0);pdf.line(L,y,R,y);y+=8;
+ const mao=totalMao(d);
+ pdf.setFont('helvetica','normal');pdf.setFontSize(9);pdf.setTextColor(30,30,30);
+ pdf.text('Mão de obra:',R-65,y);
+ pdf.text(dinheiro(mao),R-2,y,{align:'right'});y+=7;
+ pdf.text('Peças:',R-65,y);
+ pdf.text(dinheiro(d.valorPecas),R-2,y,{align:'right'});y+=8;
+
+ pdf.setFillColor(245,245,245);pdf.rect(R-80,y-5,80,13,'F');
+ pdf.setFont('helvetica','bold');pdf.setFontSize(12);pdf.setTextColor(190,0,0);
+ pdf.text('TOTAL:',R-76,y+3);
+ pdf.text(dinheiro(mao+d.valorPecas),R-3,y+3,{align:'right'});y+=17;
+
+ if(d.observacoes){
+  if(y>250){pdf.addPage();y=18;}
+  pdf.setFont('helvetica','bold');pdf.setFontSize(8);pdf.setTextColor(35,35,35);
+  pdf.text('OBSERVAÇÕES:',L,y);y+=4;
+  y+=wrap(d.observacoes,L,y,W,8)+4;
+ }
+
+ if(y>255){pdf.addPage();y=25;}
+ pdf.setDrawColor(90,90,90);
+ pdf.line(L+5,y+12,L+75,y+12);
+ pdf.line(R-75,y+12,R-5,y+12);
+ pdf.setFont('helvetica','normal');pdf.setFontSize(8);pdf.setTextColor(50,50,50);
+ pdf.text('Assinatura do cliente',L+40,y+17,{align:'center'});
+ pdf.text('Responsável / oficina',R-40,y+17,{align:'center'});
+ pdf.setFontSize(7);pdf.setTextColor(100,100,100);
+ pdf.text('Orçamento sujeito à avaliação e confirmação dos serviços.',105,287,{align:'center'});
+ pdf.text('WevertonCar • OS '+d.os,105,291,{align:'center'});
+
+ const nome=(d.cliente||'Cliente').replace(/[^a-zA-Z0-9À-ÿ ]/g,'').replace(/\s+/g,'_');
+ return {blob:pdf.output('blob'),nome:'OS_'+d.os+'_'+nome+'.pdf'};
+}
+
+function gerarPDF(){
+ const r=criarPDF();if(!r)return;
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(r.blob);a.download=r.nome;a.click();
+ setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+async function compartilharPDF(){
+ const r=criarPDF();if(!r)return;
+ const f=new File([r.blob],r.nome,{type:'application/pdf'});
+ if(navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){
+  try{
+   await navigator.share({title:'WevertonCar OS '+dados().os,text:'Orçamento de serviço',files:[f]});
+  }catch(e){if(e.name!=='AbortError')alert('Não foi possível compartilhar.');}
+ }else{
+  gerarPDF();alert('PDF salvo. Abra o arquivo e use Compartilhar.');
+ }
+}
+function enviarWhatsAppTexto(){
+ const d=dados();
+ if(!d.servicos.length){alert('Digite pelo menos um serviço.');return;}
+ const mao=totalMao(d);
+ const txt='*WevertonCar - Orçamento de Serviço*\n'+
+ 'Rua São Regis, 310 - Bairro Nova York\n\n*OS: '+d.os+'*\n'+
+ 'Data: '+(d.data||'-')+'\nEntrada: '+(d.entrada||'-')+
+ '\nSaída: '+(d.saida||'-')+'\nKM entrada: '+(d.kmEntrada||'-')+
+ ' | KM saída: '+(d.kmSaida||'-')+'\n\nCliente: '+(d.cliente||'Não informado')+
+ '\nEndereço: '+(d.endereco||'-')+'\nTelefone: '+(d.telefone||'-')+
+ '\nCarro: '+(d.carro||'Não informado')+' '+(d.ano||'')+
+ '\nPlaca: '+(d.placa||'-')+'\nCategoria: '+d.categoria+
+ '\n\n*Serviços:*\n'+d.servicos.map((s,i)=>(i+1)+'. '+s.servico+' - '+dinheiro(valorServico(d,s))).join('\n')+
+ '\n\nPeças: '+(d.pecas||'Não informadas')+
+ '\nMão de obra: '+dinheiro(mao)+'\nValor das peças: '+dinheiro(d.valorPecas)+
+ '\n*TOTAL: '+dinheiro(mao+d.valorPecas)+'*'+
+ (d.observacoes?'\n\nObservações: '+d.observacoes:'');
+ window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');
+}
+
+document.addEventListener('input',e=>{
+ if(e.target.matches('input,textarea,select')){
+  if(e.target.id==='carro')atualizarValores();
+  agendarDraft();
+ }
+});
+
+if(!getDB().length){
+ saveDB([
+  {id:1,carro:'Uno',servico:'Troca de pastilha',minutos:60,valor:120},
+  {id:2,carro:'Golf Sapão',servico:'Troca de pastilha',minutos:60,valor:150}
+ ]);
+}
+
+/* Ao atualizar, restaura a OS e o rascunho existentes. */
 const rasc=ler(KDRAFT,null);
-if(rasc&&rasc.os)preencher(rasc);else setInitial();
-renderDB();renderHistorico();renderClientes();
+if(rasc&&rasc.os){
+ preencher(rasc);
+}else{
+ setInitial(proximoNumeroOS());
+}
+renderDB();
+renderCarros();
+renderHistorico();
+renderClientes();
 </script>
 </body>
 </html>
